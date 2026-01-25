@@ -32,6 +32,28 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
+        <ControlTemplate x:Key="RedButton" TargetType="Button">
+
+            <Border x:Name="InnerBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="#000000"  
+                    BorderThickness="3"
+                    CornerRadius="15"
+                    >
+                <ContentPresenter HorizontalAlignment="Center"  
+                  VerticalAlignment="Center" />
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Background" Value="#ffffff"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Red"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <Style TargetType="ScrollBar">
             <Setter Property="Template">
                 <Setter.Value>
@@ -275,9 +297,9 @@
                                   ScrollChanged="EditOptionPanel_ScrollViewer_ScrollChanged"
                                   PreviewMouseWheel="EditOptionPanel_ScrollViewer_PreviewMouseWheel">
 
-                        <Grid x:Name="EditOptionPanel_TaskPanel" Margin="20, 10, 25, 10">
+                        <StackPanel x:Name="EditOptionPanel_TaskPanel" Margin="20, 10, 25, 10">
 
-                        </Grid>
+                        </StackPanel>
 
                     </ScrollViewer>
 
