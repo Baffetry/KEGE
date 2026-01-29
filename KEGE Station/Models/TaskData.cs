@@ -7,7 +7,9 @@ namespace Task_Data
     {
         public string TaskNumber { get; set; }
         public byte[] Image { get; set; }
-        public List<byte[]> Files { get; set; }
+        public int TaskWeight { get; set; } = 1;
+
+        public List<FileData> Files { get; set; }
 
         [JsonIgnore]
         public List<byte[]> Answers { get; set; }

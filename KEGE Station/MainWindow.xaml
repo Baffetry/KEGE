@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KEGE_Station"
+        xmlns:userControls="clr-namespace:KEGE_Station.User_Controls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Icon="/Icons/innerIcon.ico"
+        Icon="/Resources/Icons/innerIcon.ico"
         Title="КЕГЭ" 
         Height="1080" Width="1920"
         MinHeight="1080" MinWidth="1920">
@@ -98,7 +99,7 @@
                 <Button x:Name="Logo_btn"
                         Margin="0, 1, 0, 30"
                         Width="460" Height="111"
-                        FontSize="32" FontWeight="SemiBold" FontFamily="/Fonts/#Inter"
+                        FontSize="32" FontWeight="SemiBold" FontFamily="/Resources/Fonts/#Inter"
                         Template="{StaticResource NoMouseOverButtonTemplate}"
                         Click="Logo_btn_Click"
                         Content="Главное меню">
@@ -108,7 +109,7 @@
                         Content="Генератор"
                         Margin="0, 1, 0, 30"
                         Width="460" Height="111"
-                        FontSize="32" FontWeight="SemiBold" FontFamily="/Fonts/#Inter"
+                        FontSize="32" FontWeight="SemiBold" FontFamily="/Resources/Fonts/#Inter"
                         Template="{StaticResource NoMouseOverButtonTemplate}"
                         Click="OpenGenerator_btn_Click"/>
 
@@ -116,7 +117,7 @@
                         Content="Редактировать вариант"
                         Margin="0, 0, 0, 30"
                         Width="460" Height="111"
-                        FontSize="32" FontWeight="SemiBold" FontFamily="/Fonts/#Inter"
+                        FontSize="32" FontWeight="SemiBold" FontFamily="/Resources/Fonts/#Inter"
                         Template="{StaticResource NoMouseOverButtonTemplate}"
                         Click="OpenEdit_btn_Click"/>
 
@@ -124,14 +125,14 @@
                         Content="Проверить результаты" 
                         Margin="0, 0, 0, 30"
                         Width="460" Height="111"
-                        FontSize="32" FontWeight="SemiBold" FontFamily="/Fonts/#Inter"
+                        FontSize="32" FontWeight="SemiBold" FontFamily="/Resources/Fonts/#Inter"
                         Template="{StaticResource NoMouseOverButtonTemplate}"
                         Click="OpenResults_btn_Click"/>
 
                 <Button x:Name="Exit_btn"
                         Content="Выход" 
                         Width="460" Height="111"
-                        FontSize="32" FontWeight="SemiBold" FontFamily="/Fonts/#Inter"
+                        FontSize="32" FontWeight="SemiBold" FontFamily="/Resources/Fonts/#Inter"
                         Template="{StaticResource NoMouseOverButtonTemplate}"
                         Click="Exit_btn_Click"/>
 
@@ -139,7 +140,7 @@
         </Border>
 
         <!-- Лого -->
-        <Grid x:Name="Logo" Grid.Column="0" Visibility="Visible">
+        <Grid x:Name="Logo" Grid.Column="0" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="140"/>
@@ -148,7 +149,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="3" Orientation="Horizontal">
-                <Image Source="/Resources/edusite_blue_logo.png" 
+                <Image Source="/Resources/Icons/edusite_blue_logo.png" 
                        Height="1100" Width="1100"
                        Margin="490, -80, 0, 0"
                 >
@@ -171,7 +172,7 @@
             <TextBlock Grid.Row="1"
                        Text="Информатика"
                        FontSize="120"
-                       FontFamily="./Fonts/#Inter"
+                       FontFamily="/Resources/Fonts/#Inter"
                        FontWeight="Regular"
                        Foreground="#000"
                        Margin="154,14,0,91" 
@@ -202,7 +203,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Введите количество вариантов:" Grid.Column="0" Grid.Row="0"
-                   FontFamily="/Fonts/#Inter" FontSize="55" FontWeight="SemiBold"
+                   FontFamily="/Resources/Fonts/#Inter" FontSize="55" FontWeight="SemiBold"
                    VerticalAlignment="Center" Width="900"
                    Margin="60, 0, 0, 0"/>
 
@@ -211,7 +212,7 @@
                     Width="270" Height="90" Margin="0, 0, 85, 0">
 
                 <TextBox x:Name="AmountOfOptions" Margin="10, 10" MaxLength="3"
-                         FontFamily="/Fonts/#Inter" FontSize="70" FontWeight="SemiBold"
+                         FontFamily="/Resources/Fonts/#Inter" FontSize="70" FontWeight="SemiBold"
                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                          PreviewTextInput="AmountOfOptions_PreviewTextInput" BorderThickness="0"/>
             </Border>
@@ -221,7 +222,7 @@
                     VerticalAlignment="Top"
                     Template="{StaticResource NoMouseOverButtonTemplate}"
                     Click="GenerateOptionsPanel_Generate_btn_Click">
-                <Image Source="/Resources/lamp96x96.png" Height="60" Width="60"/>
+                <Image Source="/Resources/Icons/lamp96x96.png" Height="60" Width="60"/>
             </Button>
 
             <Button x:Name="GenerateOptionsPanel_Back_btn" 
@@ -230,33 +231,35 @@
                     HorizontalAlignment="Right" VerticalAlignment="Top"
                     Template="{StaticResource NoMouseOverButtonTemplate}"
                     Click="GenerateOptionsPanel_Back_btn_Click">
-                <Image Source="/Resources/back96x96.png" Height="50" Width="50"/>
+                <Image Source="/Resources/Icons/back96x96.png" Height="50" Width="50"/>
             </Button>
 
         </Grid>
 
         <!-- Панель редактирования варианта -->
-        <Grid x:Name="EditOptionPanel" Visibility="Collapsed">
+        <Grid x:Name="EditOptionPanel" Visibility="Visible">
             <StackPanel Height="1080">
                 <StackPanel Orientation="Vertical">
 
                     <!-- Выбор варианта -->
                     <Label Content="Выберите вариант:"
-                           FontFamily="/Fonts/#Inter" FontSize="40" FontWeight="SemiBold"
+                           FontFamily="/Resources/Fonts/#Inter" FontSize="40" FontWeight="SemiBold"
                            Margin="30, 20, 0, 0"/>
 
                     <StackPanel Orientation="Horizontal" Margin="20, 2, 0, 0">
 
                         <Border BorderBrush="#000000" BorderThickness="3" CornerRadius="15" 
-                                Height="55" Width="1050">
-                            <Label x:Name="OptionPath" Margin="10, 7"/>
+                                Height="60" Width="1050">
+                            <Label x:Name="_OptionPathLabel" Margin="10, 7" 
+                                   FontFamily="/Fonst/#Inter" FontSize="25" FontWeight="SemiBold"
+                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
                         </Border>
 
                         <Button x:Name="ChoiceOption"
                                 Width="180" Height="55" Margin="30, 0"
                                 Template="{StaticResource NoMouseOverButtonTemplate}"
                                 Click="ChoiceOption_Click">
-                            <Image Source="/Resources/select96x96.png" Height="40" Width="40"/>
+                            <Image Source="/Resources/Icons/select96x96.png" Height="40" Width="40"/>
                         </Button>
                     </StackPanel>
 
@@ -264,35 +267,12 @@
                     <Separator BorderThickness="4" BorderBrush="#000000" Margin="15, 30"/>
 
                     <!-- Заголовки -->
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
 
-                        <Label Content="№" Grid.Column="0"
-                               FontFamily="/Fonst/#Inter" FontSize="40" FontWeight="SemiBold"
-                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-
-                        <Label Content="Кол-во" Grid.Column="1"
-                               FontFamily="/Fonst/#Inter" FontSize="35" FontWeight="SemiBold"
-                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-
-                        <Label Content="Доп. файлы" Grid.Column="2"
-                               FontFamily="/Fonst/#Inter" FontSize="35" FontWeight="SemiBold"
-                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-
-                        <Label Content="Баллы" Grid.Column="3"
-                               FontFamily="/Fonst/#Inter" FontSize="35" FontWeight="SemiBold"
-                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-
-                    </Grid>
+                    <userControls:OptionTaskHeader/>
 
                     <!-- Таблица заданий -->
                     <ScrollViewer x:Name="EditOptionPanel_ScrollViewer" Grid.Row="1"
-                                  Height="620" Margin="20, 20, 10, 20"
+                                  Height="610" Margin="20, 20, 10, 20"
                                   VerticalScrollBarVisibility="Auto"
                                   ScrollChanged="EditOptionPanel_ScrollViewer_ScrollChanged"
                                   PreviewMouseWheel="EditOptionPanel_ScrollViewer_PreviewMouseWheel">
@@ -313,23 +293,27 @@
 
                         <Button x:Name="EditOptionPanel_Erase_btn"
                                 Grid.Column="0" Width="100" Height="100"
+                                Margin="0 0 250 0"
                                 Template="{StaticResource NoMouseOverButtonTemplate}"
                                 Click="EditOptionPanel_Erase_btn_Click">
-                            <Image Source="/Resources/erase96x96.png" Height="70" Width="70"/>
+                            <Image Source="/Resources/Icons/erase96x96.png" Height="70" Width="70"/>
                         </Button>
 
-                        <Button x:Name="EditOptionPanel_AddTask_btn"
-                                Grid.Column="1" Width="100" Height="100"
-                                Template="{StaticResource NoMouseOverButtonTemplate}"
-                                Click="EditOptionPanel_AddTask_btn_Click">
-                            <Image Source="/Resources/plus96x96.png" Height="60" Width="60"/>
+                        <Button
+                            x:Name="EditOptionPanel_Undo_btn"
+                            Grid.Column="1" Width="100" Height="100"
+                            Template="{StaticResource NoMouseOverButtonTemplate}"
+                            Click="EditOptionPanel_Undo_btn_Click"
+                            >
+                            <Image Source="/Resources/Icons/undo96x96.png" Height="70" Width="70"/>
                         </Button>
-
+                        
                         <Button x:Name="EditOptionPanel_Save_btn"
                                 Grid.Column="2" Width="100" Height="100"
+                                Margin="250 0 0 0"
                                 Template="{StaticResource NoMouseOverButtonTemplate}"
                                 Click="EditOptionPanel_Save_btn_Click">
-                            <Image Source="/Resources/save96x96.png" Height="50" Width="50"/>
+                            <Image Source="/Resources/Icons/save96x96.png" Height="70" Width="70"/>
                         </Button>
                     </Grid>
 
@@ -343,7 +327,7 @@
 
                 <!-- Выбор варианта -->
                 <Label Content="Выберите вариант:"
-                       FontFamily="/Fonts/#Inter" FontSize="40" FontWeight="SemiBold"
+                       FontFamily="/Resources/Fonts/#Inter" FontSize="40" FontWeight="SemiBold"
                        Margin="30, 20, 0, 0"/>
 
                 <StackPanel Orientation="Horizontal" Margin="20, 2, 0, 0">
@@ -357,7 +341,7 @@
                             Width="180" Height="55" Margin="30, 0"
                             Template="{StaticResource NoMouseOverButtonTemplate}"
                             Click="ChoiceRepository_Click">
-                        <Image Source="/Resources/select96x96.png" Height="40" Width="40"/>
+                        <Image Source="/Resources/Icons/select96x96.png" Height="40" Width="40"/>
                     </Button>
                 </StackPanel>
 

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Task_Data;
 using Testing_Option;
 
@@ -134,7 +135,7 @@ namespace Option_Generator
                 task.Image = task19.Image;
 
                 task.Answers = new List<byte[]>();
-                task.Files = new List<byte[]>();
+                task.Files = new List<FileData>();
 
                 task.Answers.Add(task19.Answers[0]);
                 task.Answers.Add(task20.Answers[0]);
@@ -155,8 +156,9 @@ namespace Option_Generator
             if (pngFile != null)
                 taskData.Image = File.ReadAllBytes(pngFile);
 
-            taskData.Files = new List<byte[]>();
+            taskData.Files = new List<FileData>();
             taskData.Answers = new List<byte[]>();
+            taskData.TaskWeight = 1;
 
             var allFiles = Directory.GetFiles(taskDir);
 
@@ -164,10 +166,21 @@ namespace Option_Generator
             {
                 if (file != pngFile && Path.GetExtension(file) != ".png")
                 {
-                    if (Path.GetExtension(file) == ".txt")
+                    string fileName = Path.GetFileName(file);
+
+                    if (Regex.Match(fileName, @"[aA]nswer.txt").Success)
                         taskData.Answers.Add(File.ReadAllBytes(file));
                     else
-                        taskData.Files.Add(File.ReadAllBytes(file));
+                    {
+                        string name = Path.GetFileName(file);
+                        byte[] data = File.ReadAllBytes(file);
+
+                        taskData.Files.Add(new FileData()
+                        {
+                            FileName = name,
+                            Data = data
+                        });
+                    }
                 }
             }
 

@@ -8,45 +8,74 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>KEGE</AssemblyName>
-    <ApplicationIcon>Icons\main.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\main.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Fonts\Rajdhani-Bold.ttf" />
-    <None Remove="Fonts\Rajdhani-Light.ttf" />
-    <None Remove="Fonts\Rajdhani-Medium.ttf" />
-    <None Remove="Fonts\Rajdhani-Regular.ttf" />
-    <None Remove="Fonts\Rajdhani-SemiBold.ttf" />
-    <None Remove="Icons\innerIcon.ico" />
+    <None Remove="Resources\Fonts\Rajdhani-Bold.ttf" />
+    <None Remove="Resources\Fonts\Rajdhani-Light.ttf" />
+    <None Remove="Resources\Fonts\Rajdhani-Medium.ttf" />
+    <None Remove="Resources\Fonts\Rajdhani-Regular.ttf" />
+    <None Remove="Resources\Fonts\Rajdhani-SemiBold.ttf" />
+    <None Remove="Resources\Icons\innerIcon.ico" />
+    <None Remove="Resources\Icons\main.ico" />
     <None Remove="Resources\back96x96.png" />
+    <None Remove="Resources\delete96x96.png" />
     <None Remove="Resources\edusite_blue_logo.png" />
     <None Remove="Resources\edusite_default_logo.png" />
     <None Remove="Resources\erase96x96.png" />
+    <None Remove="Resources\exel96x96.png" />
+    <None Remove="Resources\Extensions\unknownFile96xx96.png" />
     <None Remove="Resources\home96x96.png" />
     <None Remove="Resources\lamp96x96.png" />
     <None Remove="Resources\Logo_demidovskiy_universitet.png" />
+    <None Remove="Resources\ods96x96.png" />
     <None Remove="Resources\plus96x96.png" />
     <None Remove="Resources\save96x96.png" />
     <None Remove="Resources\select96x96.png" />
+    <None Remove="Resources\undo96x96.png" />
+    <None Remove="Resources\word96x96.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Icons\main.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Fonts\Rajdhani-SemiBold.ttf" />
-    <Resource Include="Icons\innerIcon.ico" />
-    <Resource Include="Resources\back96x96.png" />
-    <Resource Include="Resources\edusite_blue_logo.png">
+    <Resource Include="Resources\Fonts\Rajdhani-SemiBold.ttf" />
+    <Resource Include="Resources\Icons\innerIcon.ico" />
+    <Resource Include="Resources\Icons\main.ico" />
+    <Resource Include="Resources\Icons\back96x96.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\erase96x96.png" />
-    <Resource Include="Resources\home96x96.png" />
-    <Resource Include="Resources\lamp96x96.png" />
-    <Resource Include="Resources\plus96x96.png" />
-    <Resource Include="Resources\save96x96.png" />
-    <Resource Include="Resources\select96x96.png" />
+    <Resource Include="Resources\Icons\delete96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\edusite_blue_logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\erase96x96.png" />
+    <Resource Include="Resources\Extensions\exel96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Extensions\unknownFile96xx96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\home96x96.png" />
+    <Resource Include="Resources\Icons\lamp96x96.png" />
+    <Resource Include="Resources\Extensions\ods96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\plus96x96.png" />
+    <Resource Include="Resources\Icons\save96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\select96x96.png" />
+    <Resource Include="Resources\Extensions\txt96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Extensions\word96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\undo96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
