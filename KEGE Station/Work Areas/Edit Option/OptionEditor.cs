@@ -28,7 +28,7 @@ namespace Edit_Option
         public void ChoiseOption()
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.DefaultDirectory = savePath;
+            ofd.InitialDirectory = savePath;
 
             if (ofd.ShowDialog() is true)
             {

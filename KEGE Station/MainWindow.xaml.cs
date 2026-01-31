@@ -1,6 +1,8 @@
 ﻿using Edit_Option;
+using KEGE_Station.Work_Areas.Checking_the_results;
 using Option_Generator;
 using System.IO;
+using System.Reflection.Emit;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,9 +16,11 @@ namespace KEGE_Station
     public partial class MainWindow : Window
     {
         private string taskBasePath = @"D:\\Data\\Files\\Задания КЕГЭ";
-        private string savePath = @"D:\Temp\Options";
+        private string optionsPath = @"D:\Temp\Options";
+        private string answersPath = @"D:\Temp\Answers";
         private GridFacade facade = new GridFacade();
         private OptionEditor optionEditor;
+        private ResultChecker resultChecker;
 
         public MainWindow()
         {
@@ -25,6 +29,7 @@ namespace KEGE_Station
             SetGrids();
 
             optionEditor = new OptionEditor(EditOptionPanel_TaskPanel, _OptionPathLabel);
+            resultChecker = new ResultChecker(_ResultPanel, RepositoryPath);
         }
 
         private void SetGrids()
@@ -83,20 +88,27 @@ namespace KEGE_Station
 
             for (int i = 0; i < count; i++)
             {
-                TestingOption option = generator.GetOption();
+                var (option, response)= generator.GetOption();
 
                 string fileName = $"Вариант_{i + 1:000}_{DateTime.Now:dd-MM-yyyy}.json";
-                string filePath = Path.Combine(savePath, fileName);
+                string optionFilePath = Path.Combine(optionsPath, fileName);
+                string answerFilePath = Path.Combine(answersPath, fileName);
 
-                string json = JsonSerializer.Serialize(option, new JsonSerializerOptions
+                string jsonOption = JsonSerializer.Serialize(option, new JsonSerializerOptions
                 {
                     WriteIndented = true,
                 });
 
-                File.WriteAllText(filePath, json);
+                string jsonAnswer = JsonSerializer.Serialize(response, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                });
+
+                File.WriteAllText(optionFilePath, jsonOption);
+                File.WriteAllText(answerFilePath, jsonAnswer);
             }
 
-            MessageBox.Show($"Создано {count} вариантов в папке: {savePath}",
+            MessageBox.Show($"Создано {count} вариантов в папке: {optionsPath}",
                        "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -144,7 +156,7 @@ namespace KEGE_Station
 
         private void ChoiceRepository_Click(object sender, RoutedEventArgs e)
         {
-
+            resultChecker.ChoiseDirectory();
         }
         #endregion
 
@@ -160,22 +172,12 @@ namespace KEGE_Station
 
         private void CheckResultPanel_ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
+            var scrollViewer = (ScrollViewer)sender;
 
-        }
-
-        private void CheckResultPanel_ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-
-        }
-
-        private void EditOptionPanel_ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-
-        }
-
-        private void EditOptionPanel_ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-
+            if (scrollViewer.ExtentHeight > scrollViewer.ViewportHeight)
+                _ResultPanel.Margin = new Thickness(10, 10, 15, 10);
+            else
+                _ResultPanel.Margin = new Thickness(10, 10, 25, 10);
         }
         #endregion
 

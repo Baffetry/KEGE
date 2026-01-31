@@ -12,7 +12,7 @@ namespace Task_Data
         public List<FileData> Files { get; set; }
 
         [JsonIgnore]
-        public List<byte[]> Answers { get; set; }
+        public List<byte[]> Answer { get; set; }
 
         public TaskData() { }
 

@@ -17,6 +17,8 @@
     <None Remove="Resources\Fonts\Rajdhani-Medium.ttf" />
     <None Remove="Resources\Fonts\Rajdhani-Regular.ttf" />
     <None Remove="Resources\Fonts\Rajdhani-SemiBold.ttf" />
+    <None Remove="Resources\Icons\buttonClose96x96.png" />
+    <None Remove="Resources\Icons\error96x96.png" />
     <None Remove="Resources\Icons\innerIcon.ico" />
     <None Remove="Resources\Icons\main.ico" />
     <None Remove="Resources\back96x96.png" />
@@ -27,6 +29,7 @@
     <None Remove="Resources\exel96x96.png" />
     <None Remove="Resources\Extensions\unknownFile96xx96.png" />
     <None Remove="Resources\home96x96.png" />
+    <None Remove="Resources\Icons\warning96x96.png" />
     <None Remove="Resources\lamp96x96.png" />
     <None Remove="Resources\Logo_demidovskiy_universitet.png" />
     <None Remove="Resources\ods96x96.png" />
@@ -39,6 +42,12 @@
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\Rajdhani-SemiBold.ttf" />
+    <Resource Include="Resources\Icons\buttonClose96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\error96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\innerIcon.ico" />
     <Resource Include="Resources\Icons\main.ico" />
     <Resource Include="Resources\Icons\back96x96.png">
@@ -74,6 +83,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\undo96x96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\warning96x96.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
