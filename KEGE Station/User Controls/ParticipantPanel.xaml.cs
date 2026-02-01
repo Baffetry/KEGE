@@ -67,9 +67,7 @@ namespace KEGE_Station.User_Controls
             var windowsToClose = Application.Current.Windows.OfType<StatisticWindow>().ToList();
 
             foreach (var window in windowsToClose)
-            {
                 window.Close();
-            }
         }
     }
 }

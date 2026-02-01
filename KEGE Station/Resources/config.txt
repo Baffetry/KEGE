@@ -1,0 +1,5 @@
+TaskBasePath - D:\
+SaveOptionsPath - D:\
+SaveAnswersPath - D:\
+LoadResults - D:\
+ScoreTable - D:\

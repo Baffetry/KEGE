@@ -5,10 +5,9 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <sys:String x:Key="TaskBasePath">D:\Data\Files\Задания КЕГЭ</sys:String>
-        <sys:String x:Key="SaveOptionsPath">D:\Temp\Options</sys:String>
-        <sys:String x:Key="SaveAnswersPath">D:\Temp\Answers</sys:String>
-        <sys:String x:Key="LoadResults">D:\Temp\Results</sys:String>
-        <sys:String x:Key="ScoreTable">D:\Temp\баллы.txt</sys:String>
+        <sys:String x:Key="TaskBasePath">D:\</sys:String>
+        <sys:String x:Key="SaveOptionsPath">D:\</sys:String>
+        <sys:String x:Key="SaveAnswersPath">D:\</sys:String>
+        <sys:String x:Key="ScoreTable">D:\</sys:String>
     </Application.Resources>
 </Application>

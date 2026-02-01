@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using KEGE_Station.User_Controls;
 using System.Windows;
-using KEGE_Station.User_Controls;
+using System.Windows.Controls;
 
 namespace KEGE_Station
 {
@@ -9,6 +9,7 @@ namespace KEGE_Station
         private static GridFacade instance;
 
         private static MainLogo Logo;
+        private static SettingsControl SG;
         private static Grid GOP;
         private static Grid EOP;
         private static Grid CRP;
@@ -27,6 +28,7 @@ namespace KEGE_Station
             GOP.Visibility = Visibility.Collapsed;
             EOP.Visibility = Visibility.Collapsed;
             CRP.Visibility = Visibility.Collapsed;
+            SG.Visibility = Visibility.Collapsed;
 
             Logo.Visibility = Visibility.Visible;
         }
@@ -36,6 +38,7 @@ namespace KEGE_Station
             Logo.Visibility = Visibility.Collapsed;
             EOP.Visibility = Visibility.Collapsed;
             CRP.Visibility = Visibility.Collapsed;
+            SG.Visibility = Visibility.Collapsed;
 
             GOP.Visibility = Visibility.Visible;
         }
@@ -45,6 +48,7 @@ namespace KEGE_Station
             Logo.Visibility = Visibility.Collapsed;
             GOP.Visibility = Visibility.Collapsed;
             CRP.Visibility = Visibility.Collapsed;
+            SG.Visibility = Visibility.Collapsed;
 
             EOP.Visibility = Visibility.Visible;
         }
@@ -54,8 +58,20 @@ namespace KEGE_Station
             Logo.Visibility = Visibility.Collapsed;
             GOP.Visibility = Visibility.Collapsed;
             EOP.Visibility = Visibility.Collapsed;
+            SG.Visibility = Visibility.Collapsed;
 
             CRP.Visibility = Visibility.Visible;
+        }
+
+        public void OpenSettings()
+        {
+            Logo.Visibility = Visibility.Collapsed;
+            GOP.Visibility = Visibility.Collapsed;
+            EOP.Visibility = Visibility.Collapsed;
+            CRP.Visibility = Visibility.Collapsed;
+
+            SG.RefreshSettings();
+            SG.Visibility = Visibility.Visible;
         }
 
         public static void SetLogo(MainLogo logo)
@@ -73,6 +89,10 @@ namespace KEGE_Station
         public static void SetCRP(Grid grid)
         {
             CRP = grid;
+        }
+        public static void SetSG(SettingsControl control)
+        {
+            SG = control;
         }
     }
 }

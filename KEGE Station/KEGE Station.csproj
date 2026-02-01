@@ -42,6 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\config.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Fonts\Rajdhani-SemiBold.ttf" />
     <Resource Include="Resources\Icons\buttonClose96x96.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

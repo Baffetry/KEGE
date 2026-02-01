@@ -40,7 +40,7 @@ namespace KEGE_Station.User_Controls
 
         private void Settings_btn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            facade.OpenSettings();
         }
 
         private void Home_btn_Click(object sender, System.Windows.RoutedEventArgs e)

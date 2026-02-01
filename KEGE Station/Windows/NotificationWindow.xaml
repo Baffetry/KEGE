@@ -145,7 +145,7 @@
                 Grid.Row="2"
                 MaxHeight="300"
                 Margin="10"
-                VerticalScrollBarVisibility="Visible"
+                VerticalScrollBarVisibility="Auto"
                 >
 
                 <TextBlock

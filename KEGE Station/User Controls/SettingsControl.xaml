@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="KEGE_Station.User_Controls.SettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="1320">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border x:Name="InnerBorder" Background="#ffffff" BorderBrush="#000000" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="15">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{x:Static SystemColors.ControlLightBrush}" />
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid x:Name="SettingsControlPanel" Background="White">
+        <StackPanel Margin="40">
+            <Label Content="Настройки конфигураций" FontSize="45" FontWeight="Bold" Margin="0,0,0,30" FontFamily="/Resources/Fonts/#Inter"/>
+
+            <TextBlock Text="База задач:" FontSize="30" Margin="5,0,0,5" FontFamily="/Resources/Fonts/#Inter"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border BorderBrush="Black" BorderThickness="2" CornerRadius="8">
+                    <TextBox 
+                        x:Name="Setting_TaskPath" FontSize="20" Padding="5" BorderThickness="0" 
+                        Margin="2" FontFamily="/Resources/Fonts/#Inter" FontWeight="SemiBold" 
+                        VerticalContentAlignment="Center"
+                        />
+                </Border>
+                
+                <Button 
+                    x:Name="BrowseTaskBase_btn"
+                    Grid.Column="1" Content="..." Margin="10,0,0,0" Template="{StaticResource NoMouseOverButtonTemplate}" 
+                    Height="50" FontSize="20" Click="Browse_Click" Tag="TaskPath" BorderThickness="2"
+                    />
+            </Grid>
+
+            <TextBlock Text="Таблица баллов:" FontSize="30" Margin="5,0,0,5" FontFamily="/Resources/Fonts/#Inter"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border BorderBrush="Black" BorderThickness="2" CornerRadius="8">
+                    <TextBox 
+                        x:Name="Setting_ScoreTable" FontSize="20" Padding="5" BorderThickness="0" 
+                        Margin="2" FontFamily="/Resources/Fonts/#Inter" FontWeight="SemiBold" 
+                        VerticalContentAlignment="Center"
+                        />
+                </Border>
+                
+                <Button
+                    x:Name="BrowseScoreTable_btn"
+                    Grid.Column="1" Content="..." Margin="10,0,0,0" Template="{StaticResource NoMouseOverButtonTemplate}" 
+                    Height="50" FontSize="20" Click="Browse_Click" Tag="ScoreTable" BorderThickness="2"
+                    />
+            </Grid>
+
+            <TextBlock Text="Варианты:" FontSize="30" Margin="5,0,0,5" FontFamily="/Resources/Fonts/#Inter"/>
+            <Grid Margin="0,0,0,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border BorderBrush="Black" BorderThickness="2" CornerRadius="8">
+                    <TextBox 
+                        x:Name="Setting_OptionsPath" FontSize="18" Padding="5" BorderThickness="0" 
+                        Margin="2" FontFamily="/Resources/Fonts/#Inter" FontWeight="SemiBold" 
+                        VerticalContentAlignment="Center"
+                        />
+                </Border>
+                
+                <Button
+                    x:Name="BrowseOptions_btn"
+                    Grid.Column="1" Content="..." Margin="10,0,0,0" Template="{StaticResource NoMouseOverButtonTemplate}" 
+                    Height="50" FontSize="20" Click="Browse_Click" Tag="OptionsPath" BorderThickness="2"
+                    />
+            </Grid>
+
+            <TextBlock Text="Ответы:" FontSize="30" Margin="5,0,0,5" FontFamily="/Resources/Fonts/#Inter"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border BorderBrush="Black" BorderThickness="2" CornerRadius="8">
+                    <TextBox 
+                        x:Name="Setting_AnswersPath" FontSize="20" Padding="5" BorderThickness="0"
+                        Margin="2" FontFamily="/Resources/Fonts/#Inter" FontWeight="SemiBold" 
+                        VerticalContentAlignment="Center"
+                        />
+                </Border>
+                
+                <Button
+                    x:Name="BrowseAnswers_btn"
+                    Grid.Column="1" Content="..." Margin="10,0,0,0" Template="{StaticResource NoMouseOverButtonTemplate}" 
+                    Height="50" FontSize="20" Click="Browse_Click" Tag="AnswersPath" BorderThickness="2"
+                    />
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button 
+                    x:Name="SaveSettings_btn" Content="Сохранить" Width="200" Height="60" 
+                    FontFamily="/Resources/Fonts/#Inter" FontSize="25" FontWeight="SemiBold" 
+                    Template="{StaticResource NoMouseOverButtonTemplate}" Click="SaveSettings_btn_Click"
+                    BorderThickness="3"
+                    />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

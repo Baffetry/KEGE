@@ -1,4 +1,5 @@
-﻿using KEGE_Station.Windows;
+﻿using Edit_Option;
+using KEGE_Station.Windows;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows;
@@ -12,10 +13,11 @@ namespace KEGE_Station.User_Controls
     /// </summary>
     public partial class OptionTaskPanel : UserControl
     {
-        private Stack<OptionTaskPanel> _editedTask;
         private Stack<string> _addedFiles;
 
         private FilesBrowseWindow _browseWindow;
+
+        private OptionEditor _editor;
         private StackPanel _parentPanel;
         private TaskData _task;
 
@@ -46,11 +48,10 @@ namespace KEGE_Station.User_Controls
             SetButtonsBehavior();
         }
 
-        public OptionTaskPanel(StackPanel panel, Stack<OptionTaskPanel> editedTask, TaskData task)
+        public OptionTaskPanel(StackPanel panel, OptionEditor editor, TaskData task)
         {
-
             _parentPanel = panel;
-            _editedTask = editedTask;
+            _editor = editor; // Теперь используем редактор вместо двух стеков
             _task = task;
 
             InitializeComponent();
@@ -73,6 +74,13 @@ namespace KEGE_Station.User_Controls
             _task.Files.Remove(file);
 
             UpdateInfo();
+        }
+
+        public void Delete()
+        {
+            if (_addedFiles != null)
+                _addedFiles.Clear();
+            _parentPanel.Children.Remove(this);
         }
 
         private void SetButtonsBehavior()
@@ -109,8 +117,10 @@ namespace KEGE_Station.User_Controls
 
         private void _taskRemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_addedFiles != null)
-                _addedFiles.Clear();
+            // 1. Регистрируем удаление в истории
+            _editor.RegisterAction(EditorActionType.DeletePanel, this);
+
+            // 2. Удаляем из интерфейса
             _parentPanel.Children.Remove(this);
         }
 
@@ -135,8 +145,8 @@ namespace KEGE_Station.User_Controls
                 _task.Files.Add(newFile);
                 UpdateInfo();
 
-                _editedTask.Push(this);
                 _addedFiles.Push(fileName);
+                _editor.RegisterAction(EditorActionType.AddFile, this);
             }
         }
 

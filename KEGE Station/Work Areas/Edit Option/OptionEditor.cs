@@ -7,30 +7,37 @@ using System.Windows.Controls;
 using Task_Data;
 using Testing_Option;
 using KEGE_Station;
+using KEGE_Station.Windows;
 
 namespace Edit_Option
 {
+    public enum EditorActionType { AddFile, DeletePanel }
+
+    public struct EditorHistoryItem
+    {
+        public EditorActionType ActionType { get; set; }
+        public OptionTaskPanel TargetPanel { get; set; }
+    }
+
     public class OptionEditor
     {
-        private readonly string _savePath;
-        private Stack<OptionTaskPanel> _editedTask;
+        private Stack<EditorHistoryItem> _history = new Stack<EditorHistoryItem>(); 
+
         private TestingOption _currentOption;
         private StackPanel _parentPanel;
         private Label _pathLabel;
 
         public OptionEditor(StackPanel panel, Label label)
         {
-            _savePath = App.GetResourceString("SaveOptionsPath");
             _parentPanel = panel;
             _pathLabel = label;
             _currentOption = null;
-            _editedTask = new Stack<OptionTaskPanel>();
         }
 
         public void ChoiseOption()
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = _savePath;
+            ofd.InitialDirectory = App.GetResourceString("SaveOptionsPath");
 
             if (ofd.ShowDialog() is true)
             {
@@ -41,9 +48,10 @@ namespace Edit_Option
 
                 foreach (var task in _currentOption.TaskList)
                 {
-                    OptionTaskPanel otp = new OptionTaskPanel(_parentPanel, _editedTask, task);
+                    OptionTaskPanel otp = new OptionTaskPanel(_parentPanel, this, task);
                     _parentPanel.Children.Add(otp);
                 }
+                SortPanels();
             }
         }
 
@@ -56,18 +64,37 @@ namespace Edit_Option
 
         public void Undo()
         {
-            if (_editedTask is null || _editedTask.Count == 0)
-                return;
+            if (_history.Count == 0) return;
 
-            var panel = _editedTask.Pop();
-            panel.UndoAdd();
+            var lastItem = _history.Pop();
+
+            if (lastItem.ActionType == EditorActionType.AddFile)
+            {
+                // Отменяем добавление файла внутри конкретной панели
+                lastItem.TargetPanel.UndoAdd();
+            }
+            else if (lastItem.ActionType == EditorActionType.DeletePanel)
+            {
+                // Возвращаем панель в UI
+                _parentPanel.Children.Add(lastItem.TargetPanel);
+                SortPanels();
+            }
+        }
+
+        // Вспомогательные методы, которые будут вызывать панели
+        public void RegisterAction(EditorActionType type, OptionTaskPanel panel)
+        {
+            _history.Push(new EditorHistoryItem { ActionType = type, TargetPanel = panel });
         }
 
         public void Save()
         {
-            if (string.IsNullOrEmpty(_pathLabel.Content.ToString()))
+            NotificationWindow notification;
+
+            if (_pathLabel.Content is null || string.IsNullOrEmpty(_pathLabel.Content.ToString()))
             {
-                MessageBox.Show("Save option error");
+                notification = new NotificationWindow("Ошибка сохранения", "Вы не выбрали вариант для редактирования", true);
+                notification.Show();
                 return;
             }
 
@@ -81,7 +108,8 @@ namespace Edit_Option
             }
 
             _currentOption.TaskList = updatedTasks;
-            
+
+            SortPanels();
 
             string json = JsonSerializer.Serialize(_currentOption, new JsonSerializerOptions
             {
@@ -89,9 +117,31 @@ namespace Edit_Option
             });
             File.WriteAllText(_pathLabel.Content.ToString(), json);
 
-            MessageBox.Show("Файл успешно обновлён");
+            notification = new NotificationWindow("Сохранение", "Вариант успешно сохранён");
+            notification.Show();
 
             EraseAll();
+        }
+
+        public void SortPanels()
+        {
+            // 1. Берем все дочерние элементы и приводим их к типу OptionTaskPanel
+            var sortedList = _parentPanel.Children.Cast<OptionTaskPanel>()
+                .OrderBy(p =>
+                {
+                    // Пытаемся распарсить номер как число для корректной сортировки (1, 2, 10 вместо 1, 10, 2)
+                    if (int.TryParse(p.TaskNumber, out int num))
+                        return num;
+                    return int.MaxValue; // Если не число, кидаем в конец
+                })
+                .ToList();
+
+            // 2. Очищаем панель и добавляем отсортированные элементы
+            _parentPanel.Children.Clear();
+            foreach (var panel in sortedList)
+            {
+                _parentPanel.Children.Add(panel);
+            }
         }
     }
 }

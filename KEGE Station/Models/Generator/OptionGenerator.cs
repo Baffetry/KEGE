@@ -1,4 +1,5 @@
-﻿using KEGE_Station.Models.Option;
+﻿using Exceptions;
+using KEGE_Station.Models.Option;
 using Participant_Result;
 using System.IO;
 using System.Text;
@@ -17,10 +18,17 @@ namespace Option_Generator
 
         public OptionGenerator(string rootPath)
         {
-            _taskByNumber = new Dictionary<string, List<TaskData>>();
-            _rnd = new Random();
+            try
+            {
+                _taskByNumber = new Dictionary<string, List<TaskData>>();
+                _rnd = new Random();
 
-            LoadTasks(rootPath);
+                LoadTasks(rootPath);
+            }
+            catch (ConfigurationException cfgEx)
+            {
+                throw cfgEx;
+            }
         }
 
         public (TestingOption, ResponseOption) GetOption()
@@ -76,28 +84,39 @@ namespace Option_Generator
 
         public void LoadTasks(string rootPath)
         {
-            var numberDirs = Directory.GetDirectories(rootPath);
-
-            foreach (var dir in numberDirs)
+            try
             {
-                string dirName = Path.GetFileName(dir);
+                if (!Directory.Exists(rootPath))
+                    throw new ConfigurationException("Не удалось получить путь к базе с заданиями");
 
-                var taskList = new List<TaskData>();
-                string taskNumber = "";
 
-                if (!int.TryParse(dirName, out int num))
-                    continue;
+                var numberDirs = Directory.GetDirectories(rootPath);
 
-                taskNumber = num.ToString();
-                var subDirs = Directory.GetDirectories(dir);
-
-                foreach (var taskDir in subDirs)
+                foreach (var dir in numberDirs)
                 {
-                    TaskData taskData = CreateTaskData(taskDir);
-                    taskList.Add(taskData);
-                }
+                    string dirName = Path.GetFileName(dir);
 
-                _taskByNumber[taskNumber] = taskList;
+                    var taskList = new List<TaskData>();
+                    string taskNumber = "";
+
+                    if (!int.TryParse(dirName, out int num))
+                        throw new ConfigurationException("Неверный путь к базе задач");
+
+                    taskNumber = num.ToString();
+                    var subDirs = Directory.GetDirectories(dir);
+
+                    foreach (var taskDir in subDirs)
+                    {
+                        TaskData taskData = CreateTaskData(taskDir);
+                        taskList.Add(taskData);
+                    }
+
+                    _taskByNumber[taskNumber] = taskList;
+                }
+            }
+            catch (ConfigurationException ex)
+            {
+                throw ex;
             }
         }
 

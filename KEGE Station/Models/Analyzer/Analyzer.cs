@@ -4,22 +4,18 @@ using System.Text.Json;
 using KEGE_Station.Models.Option;
 using System.Data;
 using KEGE_Station;
+using KEGE_Station.Models.Exceptions;
+using Exceptions;
 
 namespace Result_Analyzer
 {
     public class Analyzer
     {
-        private readonly string answersPath;
-        private readonly string scorePath;
-
         private static Analyzer _analyzer;
         private Dictionary<int, int> _scoreDict;
 
         private Analyzer()
         {
-            answersPath = App.GetResourceString("SaveAnswersPath");
-            scorePath = App.GetResourceString("ScoreTable");
-
             SetScoreDictionary();
         }
 
@@ -97,29 +93,40 @@ namespace Result_Analyzer
         {
             try
             {
+                string answersPath = App.GetResourceString("SaveAnswersPath");
+
                 var file = Directory.GetFiles(answersPath, $"{id}*.json");
                 var json = File.ReadAllText(file[0]);
                 return JsonSerializer.Deserialize<ResponseOption>(json);
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new OptionNotFoundException($"Не удалось найти вариант. ID варианта: {id}");
             }
         }
         private void SetScoreDictionary()
         {
-            _scoreDict = new Dictionary<int, int>();
-            string line;
-
-            using (var sr = new StreamReader(scorePath))
+            try
             {
-                while ((line = sr.ReadLine()) != null)
-                {
-                    var row = line.Trim().Split().Select(x => int.Parse(x)).ToList();
-                    var (key, value) = (row[0], row[1]);
+                _scoreDict = new Dictionary<int, int>();
+                string line;
 
-                    _scoreDict[key] = value;
+                string scorePath = App.GetResourceString("ScoreTable");
+
+                using (var sr = new StreamReader(scorePath))
+                {
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        var row = line.Trim().Split().Select(x => int.Parse(x)).ToList();
+                        var (key, value) = (row[0], row[1]);
+
+                        _scoreDict[key] = value;
+                    }
                 }
+            }
+            catch (Exception cfgEx)
+            {
+                throw new ConfigurationException("Проверьте, указан ли путь к файлу с баллами");
             }
         }
     }

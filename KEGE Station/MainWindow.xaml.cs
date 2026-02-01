@@ -1,11 +1,15 @@
 ﻿using Edit_Option;
+using Exceptions;
 using KEGE_Station.Windows;
 using KEGE_Station.Work_Areas.Checking_the_results;
 using Option_Generator;
 using System.IO;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Shapes;
+using Task_Data;
 
 namespace KEGE_Station
 {
@@ -14,9 +18,6 @@ namespace KEGE_Station
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly string taskBasePath;
-        private readonly string optionsPath;
-        private readonly string answersPath;
         private GridFacade facade;
         private OptionEditor optionEditor;
         private ResultChecker resultChecker;
@@ -24,13 +25,8 @@ namespace KEGE_Station
         public MainWindow()
         {
             InitializeComponent();
-            SetButtonsBehavior();
             SetGrids();
-
-            taskBasePath = App.GetResourceString("TaskBasePath");
-            optionsPath = App.GetResourceString("SaveOptionsPath");
-            answersPath = App.GetResourceString("SaveAnswersPath");
-
+            SetButtonsBehavior();
 
             optionEditor = new OptionEditor(EditOptionPanel_TaskPanel, _OptionPathLabel);
             resultChecker = new ResultChecker(_ResultPanel, RepositoryPath);
@@ -44,6 +40,7 @@ namespace KEGE_Station
             GridFacade.SetGOP(GenerateOptionsPanel);
             GridFacade.SetEOP(EditOptionPanel);
             GridFacade.SetCRP(CheckResultPanel);
+            GridFacade.SetSG(SettingsControlPanel);
         }
         private void SetButtonsBehavior()
         {
@@ -79,37 +76,56 @@ namespace KEGE_Station
         {
             if (!int.TryParse(AmountOfOptions.Text, out int count))
             {
-                MessageBox.Show("Введите кол-во вариантов", "Предупреждение",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                NotificationWindow notification = new NotificationWindow("Неверное значение", "Введите корректное количество вариантов");
+                notification.Show();
                 return;
             }
 
-            var generator = new OptionGenerator(taskBasePath);
+            string taskBasePath = App.GetResourceString("TaskBasePath");
+            string optionsPath = App.GetResourceString("SaveOptionsPath");
+            string answersPath = App.GetResourceString("SaveAnswersPath");
 
-            for (int i = 0; i < count; i++)
+            try
             {
-                var (option, response)= generator.GetOption();
+                var generator = new OptionGenerator(taskBasePath);
 
-                string fileName = $"{option.OptionID}_Вариант_{i + 1:000}_{DateTime.Now:dd-MM-yyyy}.json";
-                string optionFilePath = Path.Combine(optionsPath, fileName);
-                string answerFilePath = Path.Combine(answersPath, fileName);
-
-                string jsonOption = JsonSerializer.Serialize(option, new JsonSerializerOptions
+                for (int i = 0; i < count; i++)
                 {
-                    WriteIndented = true,
-                });
+                    var (option, response) = generator.GetOption();
 
-                string jsonAnswer = JsonSerializer.Serialize(response, new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                });
 
-                File.WriteAllText(optionFilePath, jsonOption);
-                File.WriteAllText(answerFilePath, jsonAnswer);
+                    string fileName = $"{option.OptionID}_Вариант_{i + 1:000}_{DateTime.Now:dd-MM-yyyy}.json";
+                    string optionFilePath = System.IO.Path.Combine(optionsPath, fileName);
+                    string answerFilePath = System.IO.Path.Combine(answersPath, fileName);
+
+                    string jsonOption = JsonSerializer.Serialize(option, new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                    });
+
+                    string jsonAnswer = JsonSerializer.Serialize(response, new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                    });
+
+                    File.WriteAllText(optionFilePath, jsonOption);
+                    File.WriteAllText(answerFilePath, jsonAnswer);
+                }
+
+                NotificationWindow notification = new NotificationWindow("Создание вариантов", $"Варианты успешно созданы ({count} шт.) и сохранены в " +
+                    $"{optionsPath}");
+                notification.Show();
             }
-
-            MessageBox.Show($"Создано {count} вариантов в папке: {optionsPath}",
-                       "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            catch (ConfigurationException cfgEx)
+            {
+                NotificationWindow notification = new NotificationWindow("Ошибка конфигурации", cfgEx.Message, true);
+                notification.Show();
+            }
+            catch (Exception ex)
+            {
+                NotificationWindow notification = new NotificationWindow("Ошибка программы", ex.Message, true);
+                notification.Show();
+            }
         }
 
         private void GenerateOptionsPanel_Back_btn_Click(object sender, RoutedEventArgs e)
@@ -167,6 +183,7 @@ namespace KEGE_Station
             this.Close();
         }
         #endregion
+
         #endregion
 
         #region ScrollViewer
@@ -200,9 +217,5 @@ namespace KEGE_Station
 
         #endregion
 
-        private void Settings_btn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
