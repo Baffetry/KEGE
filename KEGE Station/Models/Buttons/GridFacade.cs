@@ -1,14 +1,26 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
+using KEGE_Station.User_Controls;
 
 namespace KEGE_Station
 {
     public class GridFacade
     {
-        private static Grid Logo;
+        private static GridFacade instance;
+
+        private static MainLogo Logo;
         private static Grid GOP;
         private static Grid EOP;
         private static Grid CRP;
+
+        private GridFacade() { }
+
+        public static GridFacade Instance()
+        {
+            if (instance is null) 
+                instance = new GridFacade();
+            return instance;
+        }
 
         public void OpenLogo()
         {
@@ -46,9 +58,9 @@ namespace KEGE_Station
             CRP.Visibility = Visibility.Visible;
         }
 
-        public static void SetLogo(Grid grid)
+        public static void SetLogo(MainLogo logo)
         {
-            Logo = grid;
+            Logo = logo;
         }
         public static void SetGOP(Grid grid)
         {

@@ -2,17 +2,40 @@
 using System.IO;
 using System.Text.Json;
 using KEGE_Station.Models.Option;
+using System.Data;
+using KEGE_Station;
 
 namespace Result_Analyzer
 {
     public class Analyzer
     {
-        private string answersPath = @"D:\Temp\Answers";
+        private readonly string answersPath;
+        private readonly string scorePath;
 
-        public int GetScore(Result result)
+        private static Analyzer _analyzer;
+        private Dictionary<int, int> _scoreDict;
+
+        private Analyzer()
+        {
+            answersPath = App.GetResourceString("SaveAnswersPath");
+            scorePath = App.GetResourceString("ScoreTable");
+
+            SetScoreDictionary();
+        }
+
+        public static Analyzer Instance()
+        {
+            if (_analyzer is null)
+                _analyzer = new Analyzer();
+            return _analyzer;
+        }
+
+
+        public (int, List<AnswerStatistic>) GetScore(Result result)
         {
             try
             {
+                List<AnswerStatistic> statistic = new List<AnswerStatistic>();
                 int score = 0;
 
                 var response = GetResponses(result.OptionID);
@@ -23,40 +46,81 @@ namespace Result_Analyzer
                 for (int i = 0; i < resultList.Count; i++)
                 {
                     var currentAnswer = resultList[i];
-                    var responseAnswer = responseList.First(x => x.TaskNumber.Equals(currentAnswer.TaskNumber));
+                    var correctAnswer = responseList.First(x => x.TaskNumber.Equals(currentAnswer.TaskNumber));
 
-                    if (currentAnswer.Equals(responseAnswer))
-                        score++;
+                    var currentTaskScore = currentAnswer.Equals(correctAnswer);
+                    var color = SetColor(currentTaskScore, currentAnswer.TaskNumber);
 
+                    score += currentTaskScore;
+
+                    statistic.Add(new AnswerStatistic(
+                        currentAnswer.TaskNumber,
+                        currentAnswer.Response, 
+                        correctAnswer.Response, 
+                        color)
+                    );
                 }
 
-                return score;
+                return (_scoreDict[score], statistic);
             }
             catch (Exception ex)
             {
-                throw new ArgumentException($"Не получилось найти вариант.\n\n" +
-                    $"ID: {result.OptionID}\n" +
-                    $"Фамилия: {result.SecondName}\n" +
-                    $"Имя: {result.Name}\n" +
-                    $"Отчество: {result.MiddleName}");
+                throw new ArgumentException(
+                    $"{result.SecondName} " +
+                    $"{result.Name} " +
+                    $"{result.MiddleName}\n"
+                );
             }
         }
 
-        public ResponseOption GetResponses(string id)
+        private StatisticColor SetColor(int score, string taskNumber)
         {
-            var files = Directory.GetFiles(answersPath);
-
-            foreach (var file in files)
+            switch (taskNumber)
             {
-                string json = File.ReadAllText(file);
-                
-                var responses = JsonSerializer.Deserialize<ResponseOption>(json);
+                case "26":
+                case "27":
 
-                if (responses.OptionID.Equals(id))
-                    return responses;
+                    return score == 0
+                        ? StatisticColor.Red
+                        : score == 1
+                            ? StatisticColor.Yellow
+                            : StatisticColor.Green;
+                default:
+
+                    return score == 0
+                        ? StatisticColor.Red
+                        : StatisticColor.Green;
             }
+        }
 
-            throw new ArgumentException();
+        private ResponseOption GetResponses(string id)
+        {
+            try
+            {
+                var file = Directory.GetFiles(answersPath, $"{id}*.json");
+                var json = File.ReadAllText(file[0]);
+                return JsonSerializer.Deserialize<ResponseOption>(json);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private void SetScoreDictionary()
+        {
+            _scoreDict = new Dictionary<int, int>();
+            string line;
+
+            using (var sr = new StreamReader(scorePath))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    var row = line.Trim().Split().Select(x => int.Parse(x)).ToList();
+                    var (key, value) = (row[0], row[1]);
+
+                    _scoreDict[key] = value;
+                }
+            }
         }
     }
 }

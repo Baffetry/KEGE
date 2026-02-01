@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="KEGE_Station.User_Controls.AnswerStatisticPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KEGE_Station.User_Controls"
+             mc:Ignorable="d" 
+             d:DesignWidth="1100"
+             >
+    <Border Background="#FFFFFF"
+            BorderBrush="#000"
+            BorderThickness="3"
+            CornerRadius="15"
+            Margin="10 5"
+            Padding="15"
+            Height="Auto">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+        </Border.Effect>
+
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0 5">
+                <TextBlock Text="Задание" FontSize="14" Foreground="#888"/>
+                <TextBlock 
+                    x:Name="_TaskNumber"
+                    Margin="4"
+                    d:Text="№15"
+                    FontFamily="/Resources/Fonts/#Inter"
+                    FontSize="28" FontWeight="Bold"                          
+                    Foreground="#000"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="20 5" VerticalAlignment="Top">
+                <TextBlock Text="Ответ участника" FontSize="14" Foreground="#888" Margin="0 0 0 5"/>
+                <TextBlock 
+                    x:Name="_ParticipantAnswer"
+                    FontSize="20" 
+                    FontWeight="SemiBold" 
+                    Foreground="#e63946"
+                    LineHeight="28"
+                    LineStackingStrategy="BlockLineHeight"
+                    FontFamily="Consolas" 
+                    />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Margin="20 5" VerticalAlignment="Top">
+                <TextBlock Text="Правильный ответ" FontSize="14" Foreground="#888" Margin="0 0 0 5"/>
+                <TextBlock 
+                    x:Name="_CorrectAnswer"
+                    FontSize="20" 
+                    FontWeight="SemiBold" 
+                    Foreground="#3fc08d"
+                    LineHeight="28"
+                    LineStackingStrategy="BlockLineHeight"
+                    FontFamily="Consolas" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

@@ -35,6 +35,31 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
+        <Style TargetType="ScrollBar">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Border CornerRadius="6" Background="#ededed" BorderBrush="#000000" BorderThickness="1" Margin="6 0 0 0">
+                            <Grid>
+                                <Track x:Name="PART_Track" IsDirectionReversed="true">
+                                    <Track.Thumb>
+                                        <Thumb>
+                                            <Thumb.Template>
+                                                <ControlTemplate TargetType="Thumb">
+                                                    <Border CornerRadius="4" Background="#4dd49e" 
+                                             Margin="1" BorderBrush="#000000" BorderThickness="1"/>
+                                                </ControlTemplate>
+                                            </Thumb.Template>
+                                        </Thumb>
+                                    </Track.Thumb>
+                                </Track>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
     
     <Border
@@ -48,6 +73,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -105,15 +131,35 @@
 
             <TextBlock
                 Grid.Row="1"
-                x:Name="_Message"
-                d:Text="Some message"
-                Text="{Binding MessageText}"
+                x:Name="_MessageTitle"
+                d:Text="Message Title"
+                Text="{Binding MessageTitleText}"
                 FontSize="20"
                 FontWeight="Regular"
                 FontFamily="/Resources/Fonts/#Inter"
                 TextWrapping="Wrap"
                 Margin="10 10 10 10"
                 />
+
+            <ScrollViewer
+                Grid.Row="2"
+                MaxHeight="300"
+                Margin="10"
+                VerticalScrollBarVisibility="Visible"
+                >
+
+                <TextBlock
+                    Grid.Row="2"
+                    x:Name="_Message"
+                    d:Text="Some message"
+                    Text="{Binding MessageText}"
+                    FontSize="20"
+                    FontWeight="Regular"
+                    FontFamily="/Resources/Fonts/#Inter"
+                    TextWrapping="Wrap"
+                    />
+
+            </ScrollViewer>
 
         </Grid>
     </Border>

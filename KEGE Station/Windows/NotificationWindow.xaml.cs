@@ -14,8 +14,9 @@ namespace KEGE_Station.Windows
         public string IconSource { get; set; }
         public string TitleText { get; set; }
         public string MessageText { get; set; }
+        public string MessageTitleText { get; set; }
 
-        public NotificationWindow(string messageText, bool isError = false)
+        public NotificationWindow(string messageTitle, string messageText, bool isError = false)
         {
             InitializeComponent();
 
@@ -27,6 +28,8 @@ namespace KEGE_Station.Windows
                 ? "Ошибка"
                 : "Предупреждение";
 
+            MessageTitleText = messageTitle;
+
             MessageText = messageText;
             
             ButtonBehavior.Apply(_Close_btn, true);
@@ -34,16 +37,11 @@ namespace KEGE_Station.Windows
             SetProps();
         }
 
-        public void Show(string messageText, bool isError = false)
-        {
-            var mb = new NotificationWindow(messageText, isError);
-            mb.Show();
-        }
-
         public void SetProps()
         {
             _Icon.Source = new BitmapImage(new Uri(IconSource, UriKind.Relative));
             _Title.Text = TitleText;
+            _MessageTitle.Text = MessageTitleText;
             _Message.Text = MessageText;
         }
 

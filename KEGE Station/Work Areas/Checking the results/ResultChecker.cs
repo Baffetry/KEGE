@@ -10,13 +10,14 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
 {
     internal class ResultChecker
     {
-        private string resultDirectoryPath = "D:\\Temp\\Results";
+        private readonly string _resultDirectoryPath;
         private StackPanel _parentPanel;
         private Label _labelPath;
         private List<Result> _results;
 
         public ResultChecker(StackPanel parentPanel, Label label) 
         {
+            _resultDirectoryPath = App.GetResourceString("LoadResults");
             _parentPanel = parentPanel;
             _labelPath = label;
             _results = new List<Result>();
@@ -24,8 +25,10 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
 
         public void ChoiseDirectory()
         {
+            string errors = string.Empty;
+
             OpenFolderDialog ofd = new OpenFolderDialog();
-            ofd.InitialDirectory = resultDirectoryPath;
+            ofd.InitialDirectory = _resultDirectoryPath;
             ofd.Title = "Выберите папку с результатами";
 
             if (ofd.ShowDialog() is true)
@@ -50,11 +53,16 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     }
                     catch (Exception ex)
                     {
-                        NotificationWindow nw = new NotificationWindow(ex.Message);
-                        nw.Show();
+                        errors += ex.Message + '\n';
                         continue;
                     }
                     _parentPanel.Children.Add(panel);
+                }
+
+                if (errors != string.Empty)
+                {
+                    NotificationWindow nw = new NotificationWindow("Не удалось найти вариант, которые решали:", errors);
+                    nw.Show();
                 }
             }
 

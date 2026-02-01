@@ -6,12 +6,13 @@ using System.Windows;
 using System.Windows.Controls;
 using Task_Data;
 using Testing_Option;
+using KEGE_Station;
 
 namespace Edit_Option
 {
     public class OptionEditor
     {
-        private string savePath = @"D:\Temp\Options";
+        private readonly string _savePath;
         private Stack<OptionTaskPanel> _editedTask;
         private TestingOption _currentOption;
         private StackPanel _parentPanel;
@@ -19,6 +20,7 @@ namespace Edit_Option
 
         public OptionEditor(StackPanel panel, Label label)
         {
+            _savePath = App.GetResourceString("SaveOptionsPath");
             _parentPanel = panel;
             _pathLabel = label;
             _currentOption = null;
@@ -28,7 +30,7 @@ namespace Edit_Option
         public void ChoiseOption()
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = savePath;
+            ofd.InitialDirectory = _savePath;
 
             if (ofd.ShowDialog() is true)
             {

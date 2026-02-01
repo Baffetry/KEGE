@@ -20,12 +20,12 @@ namespace Option_Generator
             _taskByNumber = new Dictionary<string, List<TaskData>>();
             _rnd = new Random();
 
-            LoadTasks(rootPath); // Не забудьте вызвать загрузку!
+            LoadTasks(rootPath);
         }
 
         public (TestingOption, ResponseOption) GetOption()
         {
-            string optionId = Guid.NewGuid().ToString(); // Исправил формат даты
+            string optionId = Guid.NewGuid().ToString();
             var option = new TestingOption(optionId);
             var response = new ResponseOption(optionId);
 
@@ -48,9 +48,9 @@ namespace Option_Generator
 
             for (int i = 1; i <= _taskByNumber.Count; i++)
             {
-                string taskNumber = i.ToString(); // номер задания
+                string taskNumber = i.ToString();
 
-                List<TaskData> availableTasks = _taskByNumber[taskNumber]; // лист заданий
+                List<TaskData> availableTasks = _taskByNumber[taskNumber];
 
                 int index = 0;
 
@@ -61,8 +61,9 @@ namespace Option_Generator
 
                         var selectedTask = availableTasks[index];
                     selectedTask.TaskNumber = taskNumber;
-                    
+
                     var selectedAnswers = Encoding.UTF8.GetString(selectedTask.Answer[0]);
+
                     var answer = new Answer(taskNumber, selectedAnswers);
 
                     tasks.Add(selectedTask);

@@ -2,8 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:KEGE_Station"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <sys:String x:Key="TaskBasePath">D:\Data\Files\Задания КЕГЭ</sys:String>
+        <sys:String x:Key="SaveOptionsPath">D:\Temp\Options</sys:String>
+        <sys:String x:Key="SaveAnswersPath">D:\Temp\Answers</sys:String>
+        <sys:String x:Key="LoadResults">D:\Temp\Results</sys:String>
+        <sys:String x:Key="ScoreTable">D:\Temp\баллы.txt</sys:String>
     </Application.Resources>
 </Application>

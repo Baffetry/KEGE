@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="KEGE_Station.User_Controls.MainLogo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             >
+
+    <Viewbox Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Grid Width="1528" Height="1250" ClipToBounds="True">
+
+            <TextBlock Text="Demid"
+                       FontSize="300"
+                       FontWeight="SemiBold"
+                       FontFamily="./Fonts/#Rajdhani"
+                       Foreground="#2D6DFE"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="-60,340,0,0">
+                <TextBlock.LayoutTransform>
+                    <RotateTransform Angle="90" />
+                </TextBlock.LayoutTransform>
+            </TextBlock>
+
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="70,60,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Информатика"
+                           FontSize="150"
+                           FontFamily="/Resources/Fonts/#Inter"
+                           FontWeight="Bold"
+                           Foreground="#000"
+                           Margin="0,0,0,0"/>
+
+                <TextBlock Grid.Row="1"
+                           Text="2026"
+                           FontSize="120"
+                           FontFamily="./Fonts/#Rajdhani"
+                           FontWeight="SemiBold"
+                           Foreground="#2D6DFE"
+                           HorizontalAlignment="Right"
+                           Margin="0,-25,-131,0"/>
+            </Grid>
+
+            <Image Source="/Resources/Icons/edusite_blue_logo.png" 
+                   HorizontalAlignment="Right" 
+                   VerticalAlignment="Bottom"
+                   Width="1200" Height="1200"
+                   Margin="0,0,-250,-290"
+                   Opacity="0.9">
+                <Image.LayoutTransform>
+                    <ScaleTransform ScaleX="-1" ScaleY="1"/>
+                </Image.LayoutTransform>
+            </Image>
+
+        </Grid>
+    </Viewbox>
+</UserControl>

@@ -1,12 +1,11 @@
 ﻿using Edit_Option;
+using KEGE_Station.Windows;
 using KEGE_Station.Work_Areas.Checking_the_results;
 using Option_Generator;
 using System.IO;
-using System.Reflection.Emit;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
-using Testing_Option;
 
 namespace KEGE_Station
 {
@@ -15,10 +14,10 @@ namespace KEGE_Station
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string taskBasePath = @"D:\\Data\\Files\\Задания КЕГЭ";
-        private string optionsPath = @"D:\Temp\Options";
-        private string answersPath = @"D:\Temp\Answers";
-        private GridFacade facade = new GridFacade();
+        private readonly string taskBasePath;
+        private readonly string optionsPath;
+        private readonly string answersPath;
+        private GridFacade facade;
         private OptionEditor optionEditor;
         private ResultChecker resultChecker;
 
@@ -28,25 +27,27 @@ namespace KEGE_Station
             SetButtonsBehavior();
             SetGrids();
 
+            taskBasePath = App.GetResourceString("TaskBasePath");
+            optionsPath = App.GetResourceString("SaveOptionsPath");
+            answersPath = App.GetResourceString("SaveAnswersPath");
+
+
             optionEditor = new OptionEditor(EditOptionPanel_TaskPanel, _OptionPathLabel);
             resultChecker = new ResultChecker(_ResultPanel, RepositoryPath);
         }
 
         private void SetGrids()
         {
-            GridFacade.SetLogo(Logo);
+            facade = GridFacade.Instance();
+
+            GridFacade.SetLogo(LogoControl);
             GridFacade.SetGOP(GenerateOptionsPanel);
             GridFacade.SetEOP(EditOptionPanel);
             GridFacade.SetCRP(CheckResultPanel);
         }
-
         private void SetButtonsBehavior()
         {
             // Green behavior
-            ButtonBehavior.Apply(Logo_btn);
-            ButtonBehavior.Apply(OpenGenerator_btn);
-            ButtonBehavior.Apply(OpenEdit_btn);
-            ButtonBehavior.Apply(OpenResults_btn);
             ButtonBehavior.Apply(GenerateOptionsPanel_Generate_btn);
             ButtonBehavior.Apply(EditOptionPanel_Save_btn);
             ButtonBehavior.Apply(ChoiceOption);
@@ -56,7 +57,6 @@ namespace KEGE_Station
             ButtonBehavior.Apply(GenerateOptionsPanel_Back_btn, true);
             ButtonBehavior.Apply(EditOptionPanel_Erase_btn, true);
             ButtonBehavior.Apply(EditOptionPanel_Undo_btn, true);
-            ButtonBehavior.Apply(Exit_btn, true);
         }
 
         #region Buttons
@@ -90,7 +90,7 @@ namespace KEGE_Station
             {
                 var (option, response)= generator.GetOption();
 
-                string fileName = $"Вариант_{i + 1:000}_{DateTime.Now:dd-MM-yyyy}.json";
+                string fileName = $"{option.OptionID}_Вариант_{i + 1:000}_{DateTime.Now:dd-MM-yyyy}.json";
                 string optionFilePath = Path.Combine(optionsPath, fileName);
                 string answerFilePath = Path.Combine(answersPath, fileName);
 
@@ -156,6 +156,7 @@ namespace KEGE_Station
 
         private void ChoiceRepository_Click(object sender, RoutedEventArgs e)
         {
+            CloseAllStatisticWindows();
             resultChecker.ChoiseDirectory();
         }
         #endregion
@@ -179,6 +180,16 @@ namespace KEGE_Station
             else
                 _ResultPanel.Margin = new Thickness(10, 10, 25, 10);
         }
+
+        private void CloseAllStatisticWindows()
+        {
+            var windowsToClose = Application.Current.Windows.OfType<StatisticWindow>().ToList();
+
+            foreach (var window in windowsToClose)
+            {
+                window.Close();
+            }
+        }
         #endregion
 
         #region Text box input handler
@@ -189,5 +200,9 @@ namespace KEGE_Station
 
         #endregion
 
+        private void Settings_btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
