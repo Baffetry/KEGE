@@ -22,6 +22,12 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
             _labelPath = label;
             _results = new List<Result>();
         }
+        
+        private void ShowNotification(string title, string message, bool isError)
+        {
+            NotificationWindow notification = new NotificationWindow(title, message, isError);
+            notification.Show();
+        }
 
         public void ChoiseDirectory()
         {
@@ -41,7 +47,7 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     var jsonFiles = Directory.GetFiles(ofd.FolderName, "*.json");
 
                     if (jsonFiles.Length == 0)
-                        throw new IncorrectContentException("Выбранная папка не содержит файлы с результатами");
+                        throw new IncorrectContentException("Выбранная папка не содержит файлы с результатами.");
 
                     foreach (var file in jsonFiles)
                     {
@@ -68,23 +74,19 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
             }
             catch (IncorrectContentException ex)
             {
-                NotificationWindow notification = new NotificationWindow("Неверный формат файла", ex.Message, true);
-                notification.Show();
+                ShowNotification("Неверный формат файла", ex.Message, true);
                 return;
             }
             catch (Exception ex)
             {
-                NotificationWindow notification = new NotificationWindow("Неверный формат файла", 
-                    "Обнаруженный файл не соответствует формату результата", true);
-                notification.Show();
+                ShowNotification("Неверный формат файла",
+                    "Обнаруженный файл не соответствует формату результата.\n" +
+                    "\nПроверьте путь к ответам в настройках.", true);
                 return;
             }
 
             if (errors != string.Empty)
-            {
-                NotificationWindow nw = new NotificationWindow("Не удалось найти варианты", errors, true);
-                nw.Show();
-            }
+                ShowNotification("Не удалось найти варианты", errors + '.', true);
 
             // СОРТИРОВКА!
 

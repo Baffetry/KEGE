@@ -5,11 +5,8 @@ using KEGE_Station.Work_Areas.Checking_the_results;
 using Option_Generator;
 using System.IO;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
-using Task_Data;
 
 namespace KEGE_Station
 {
