@@ -279,6 +279,7 @@
                                         Content="..." Width="60" Height="40" FontSize="20"
                                         Template="{StaticResource NoMouseOverButtonTemplate}" Click="BrowseFile_Click" 
                                         Tag="PNG" BorderThickness="2" Margin="5,0,0,0" 
+                                        FontWeight="SemiBold"
                                         />
                                     
                                 </StackPanel>
@@ -309,6 +310,7 @@
                                         Content="..." Width="60" Height="40" FontSize="20"
                                         Template="{StaticResource NoMouseOverButtonTemplate}" Click="BrowseFile_Click" 
                                         Tag="TXT" BorderThickness="2" Margin="5,0,0,0" 
+                                        FontWeight="SemiBold"
                                         />
                                     
                                 </StackPanel>
@@ -336,7 +338,7 @@
                                             x:Name="Task19_btn"
                                             Content="19" Width="60" Height="40" Margin="5,0,0,0" 
                                             Template="{StaticResource NoMouseOverButtonTemplate}" Click="BrowseFile_Click" 
-                                            Tag="TXT19" FontSize="20" BorderThickness="2" 
+                                            Tag="TXT19" FontSize="20" BorderThickness="2" FontWeight="SemiBold"
                                             />
                                         
                                     </StackPanel>
@@ -362,7 +364,7 @@
                                             x:Name="Task20_btn"
                                             Content="20" Width="60" Height="40" Margin="5,0,0,0" 
                                             Template="{StaticResource NoMouseOverButtonTemplate}" Click="BrowseFile_Click" 
-                                            Tag="TXT20" FontSize="20" BorderThickness="2"
+                                            Tag="TXT20" FontSize="20" BorderThickness="2" FontWeight="SemiBold"
                                             />
                                         
                                     </StackPanel>
@@ -388,7 +390,7 @@
                                             x:Name="Task21_btn"
                                             Content="21" Width="60" Height="40" Margin="5,0,0,0" 
                                             Template="{StaticResource NoMouseOverButtonTemplate}" Click="BrowseFile_Click" 
-                                            Tag="TXT21" FontSize="20" BorderThickness="2"
+                                            Tag="TXT21" FontSize="20" BorderThickness="2" FontWeight="SemiBold"
                                             />
                                         
                                     </StackPanel>
@@ -436,6 +438,7 @@
                                         Click="BrowseFile_Click" 
                                         Tag="ExtraMulti" BorderThickness="2" Margin="5,0,0,0"
                                         ToolTip="Добавить файлы"
+                                        FontWeight="SemiBold"
                                         />
 
                                 </StackPanel>

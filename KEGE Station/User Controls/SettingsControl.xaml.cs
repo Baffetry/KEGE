@@ -79,14 +79,16 @@ namespace KEGE_Station.User_Controls
                 SingleAnswerArea.Visibility = Visibility.Collapsed;
                 TripleAnswerArea.Visibility = Visibility.Visible;
 
-                AddTask_btn.Margin = new Thickness(0, 10, 0, 0);
+                Clear_btn.Margin = new Thickness(0, 5, 0, 0);
+                AddTask_btn.Margin = new Thickness(10, 5, 0, 0);
             }
             else
             {
                 SingleAnswerArea.Visibility = Visibility.Visible;
                 TripleAnswerArea.Visibility = Visibility.Collapsed;
 
-                AddTask_btn.Margin = new Thickness(0, 20, 0, 0);
+                Clear_btn.Margin = new Thickness(0, 20, 0, 0);
+                AddTask_btn.Margin = new Thickness(10, 20, 0, 0);
             }
 
             ClearAllFields(true);
