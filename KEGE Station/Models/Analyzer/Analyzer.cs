@@ -6,6 +6,7 @@ using System.Data;
 using KEGE_Station;
 using KEGE_Station.Models.Exceptions;
 using Exceptions;
+using System.Text.RegularExpressions;
 
 namespace Result_Analyzer
 {
@@ -41,6 +42,9 @@ namespace Result_Analyzer
 
                 for (int i = 0; i < resultList.Count; i++)
                 {
+                    if (resultList[i].Response.Equals("%noanswer%"))
+                        continue;
+
                     var currentAnswer = resultList[i];
                     var correctAnswer = responseList.First(x => x.TaskNumber.Equals(currentAnswer.TaskNumber));
 

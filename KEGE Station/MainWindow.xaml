@@ -12,8 +12,7 @@
         WindowState="Maximized"
         Icon="/Resources/Icons/innerIcon.ico"
         Title="КЕГЭ" 
-        Height="1080" Width="1920"
-        MinWidth="1280" MinHeight="720">
+        >
 
     <Window.Resources>
         <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">

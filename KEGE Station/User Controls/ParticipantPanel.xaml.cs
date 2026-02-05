@@ -48,7 +48,7 @@ namespace KEGE_Station.User_Controls
             _Score.ScoreText = score.ToString();
         }
 
-        private void _Panel_btn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void _Panel_btn_Click(object sender, RoutedEventArgs e)
         {
             CloseAllStatisticWindows();
 

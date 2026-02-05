@@ -26,7 +26,7 @@ namespace KEGE_Station.User_Controls
 
             // 1. Заменяем метку %noAnswer% на пустую строку, чтобы сохранить структуру массива
             // Используем RegexOptions.IgnoreCase, чтобы не зависеть от регистра
-            string cleanedInput = Regex.Replace(input, @"%noAnswer%", "", RegexOptions.IgnoreCase);
+            string cleanedInput = Regex.Replace(input, @"%no[aA]nswer%", "", RegexOptions.IgnoreCase);
 
             // Разделяем строку, но теперь НЕ используем RemoveEmptyEntries, 
             // чтобы пустые ответы (где был %noAnswer%) остались в массиве как ""

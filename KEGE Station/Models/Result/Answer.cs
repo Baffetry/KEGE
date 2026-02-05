@@ -1,4 +1,6 @@
-﻿namespace Participant_Result
+﻿using System.Text.RegularExpressions;
+
+namespace Participant_Result
 {
     public class Answer
     {
@@ -27,8 +29,11 @@
 
                     if (countElements > 2)
                     {
-                        string[] inputRows = answer.Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                        string[] correctRows = Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        if (Response.Equals(@"%no[aA]nswer"))
+                            return 0;
+
+                        string[] inputRows = Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        string[] correctRows = answer.Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                         var inputRow1 = inputRows[0] + " " + inputRows[1];
                         var inputRow2 = inputRows[2] + " " + inputRows[3];
@@ -45,21 +50,27 @@
                     }
                     else
                     {
+                        if (Regex.Match(Response, @"%no[aA]nswer%").Success)
+                            return 0;
+
                         string[] inputRow = Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                         string[] correctRow = answer.Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                         int score = 0;
 
-                        if (inputRow[0].Equals(correctRow[0])) score++;
-                        if (inputRow[1].Equals(correctRow[1])) score++;
+                        int maxIdx = Math.Max(inputRow.Length, correctRow.Length);
+
+                        for (int i = 0; i < maxIdx; i++)
+                            if (inputRow[i].Equals(correctRow[i])) score++;
 
                         return score;
                     }
 
                 default:
+                    inputAnswer = Response.ToLower();
+                    correctAnswer = answer.Response.ToLower();
 
-                    inputAnswer = answer.Response.ToLower();
-                    correctAnswer = Response.ToLower();
+                    inputAnswer = Regex.Replace(inputAnswer, @"%no[aA]nswer%", " ").Trim();
 
                     return inputAnswer.Equals(correctAnswer) 
                         ? 1 

@@ -12,6 +12,7 @@ namespace KEGE_Station.User_Controls
         public ScorePanel()
         {
             InitializeComponent();
+            this.Loaded += (s, e) => UpdateArc(Value);
         }
 
         public static readonly DependencyProperty ValueProperty =
@@ -48,18 +49,28 @@ namespace KEGE_Station.User_Controls
 
             // Радиус и центр (согласно размерам в XAML)
             double radius = 90;
+            double centerX = 100;
+            double centerY = 100;
 
+            double renderValue = value;
+            if (value < 0.2) renderValue = 0.2;
+            if (value > 99.8) renderValue = 99.8;
             // Вычисляем угол в радианах (180 градусов для полукруга)
             // 0 баллов = 180°, 100 баллов = 0°
-            double angleInDegrees = 180 - (value / 100 * 180);
+            double angleInDegrees = 180 - (renderValue / 100.0 * 180.0);
             double angleInRadians = angleInDegrees * (Math.PI / 180.0);
 
             // Вычисляем конечную точку
-            double x = 100 + radius * Math.Cos(angleInRadians);
-            double y = 100 - radius * Math.Sin(angleInRadians);
+            double x = centerX + radius * Math.Cos(angleInRadians);
+            double y = centerY - radius * Math.Sin(angleInRadians);
 
             // Обновляем дугу в XAML
-            ProgressArc.Point = new Point(x, y);
+            if (ProgressArc != null)
+            {
+                ProgressArc.Point = new Point(x, y);
+                // Важно: если дуга должна быть больше половины круга (у вас полукруг, так что всегда False)
+                ProgressArc.IsLargeArc = false;
+            }
 
             // Меняем цвет
             UpdateColor(value);
@@ -76,7 +87,11 @@ namespace KEGE_Station.User_Controls
 
             Color resultColor;
 
-            if (ratio < 0.5)
+            if (ratio <= 0)
+            {
+                resultColor = red;
+            }
+            else if (ratio < 0.5)
             {
                 // Первый этап: Красный -> Желтый (0% - 50%)
                 // Масштабируем ratio из [0...0.5] в [0...1]
