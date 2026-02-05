@@ -1,5 +1,6 @@
 ﻿using Exceptions;
 using KEGE_Station.Models.Option;
+using KEGE_Station.Windows;
 using Participant_Result;
 using System.IO;
 using System.Text;
@@ -50,36 +51,43 @@ namespace Option_Generator
 
         private (List<TaskData>, List<Answer>) GenerateTaskList()
         {
-            var tasks = new List<TaskData>();
-            var answers = new List<Answer>();
-
-
-            for (int i = 1; i <= _taskByNumber.Count; i++)
+            try
             {
-                string taskNumber = i.ToString();
+                var tasks = new List<TaskData>();
+                var answers = new List<Answer>();
 
-                List<TaskData> availableTasks = _taskByNumber[taskNumber];
 
-                int index = 0;
-
-                if (availableTasks.Count > 0)
+                for (int i = 1; i <= _taskByNumber.Count; i++)
                 {
-                    if (!LINKEDTASKS.Contains(i)) 
-                        index = _rnd.Next(availableTasks.Count);
+                    string taskNumber = i.ToString();
+
+                    List<TaskData> availableTasks = _taskByNumber[taskNumber];
+
+                    int index = 0;
+
+                    if (availableTasks.Count > 0)
+                    {
+                        if (!LINKEDTASKS.Contains(i))
+                            index = _rnd.Next(availableTasks.Count);
 
                         var selectedTask = availableTasks[index];
-                    selectedTask.TaskNumber = taskNumber;
+                        selectedTask.TaskNumber = taskNumber;
 
-                    var selectedAnswers = Encoding.UTF8.GetString(selectedTask.Answer[0]);
+                        var selectedAnswers = Encoding.UTF8.GetString(selectedTask.Answer[0]);
 
-                    var answer = new Answer(taskNumber, selectedAnswers);
+                        var answer = new Answer(taskNumber, selectedAnswers);
 
-                    tasks.Add(selectedTask);
-                    answers.Add(answer);
+                        tasks.Add(selectedTask);
+                        answers.Add(answer);
+                    }
                 }
-            }
 
-            return (tasks, answers);
+                return (tasks, answers);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void LoadTasks(string rootPath)
@@ -108,6 +116,10 @@ namespace Option_Generator
                     foreach (var taskDir in subDirs)
                     {
                         TaskData taskData = CreateTaskData(taskDir);
+                        taskData.TaskWeight = taskNumber == "26" || taskNumber == "27"
+                            ? 2 
+                            : 1;
+
                         taskList.Add(taskData);
                     }
 

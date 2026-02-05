@@ -120,7 +120,8 @@ namespace KEGE_Station
             }
             catch (Exception ex)
             {
-                NotificationWindow notification = new NotificationWindow("Ошибка программы", ex.Message, true);
+                var notification = new NotificationWindow("Ошибка генерации", "База заданий повреждена или не заполнена.\n" +
+                    "\nПроверить названия папок (они должны быть названы числом - номером задания) или их наличие.");
                 notification.Show();
             }
         }
