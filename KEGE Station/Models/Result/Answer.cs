@@ -61,7 +61,11 @@ namespace Participant_Result
                         int maxIdx = Math.Max(inputRow.Length, correctRow.Length);
 
                         for (int i = 0; i < maxIdx; i++)
+                        {
                             if (inputRow[i].Equals(correctRow[i])) score++;
+                            Response = $"{inputRow[0]} {inputRow[1]}";
+                            answer.Response = $"{correctRow[0]} {correctRow[1]}";
+                        }
 
                         return score;
                     }

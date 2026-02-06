@@ -6,7 +6,7 @@ using System.Data;
 using KEGE_Station;
 using KEGE_Station.Models.Exceptions;
 using Exceptions;
-using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 namespace Result_Analyzer
 {
@@ -42,7 +42,7 @@ namespace Result_Analyzer
 
                 for (int i = 0; i < resultList.Count; i++)
                 {
-                    if (resultList[i].Response.Equals("%noanswer%"))
+                    if (resultList[i].Response.Equals("%noanswer%") || resultList[i].Response.Equals("%noAnswer%"))
                         continue;
 
                     var currentAnswer = resultList[i];
@@ -52,6 +52,11 @@ namespace Result_Analyzer
                     var color = SetColor(currentTaskScore, currentAnswer.TaskNumber);
 
                     score += currentTaskScore;
+
+                    //var temp = correctAnswer.Response.Split(new[] { ' ' },
+                    //        StringSplitOptions.RemoveEmptyEntries);
+
+                    //correctAnswer.Response = $"{temp[0]} {temp[1]}";
 
                     statistic.Add(new AnswerStatistic(
                         currentAnswer.TaskNumber,
