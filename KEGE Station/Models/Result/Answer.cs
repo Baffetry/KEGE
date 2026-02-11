@@ -24,16 +24,15 @@ namespace Participant_Result
                 case "27":
                 case "26":
 
-                    int countElements = answer.Response.Split(" ", 
-                        StringSplitOptions.RemoveEmptyEntries).Count();
+                    int countElements = answer.Response.Split(" ").Count();
 
                     if (countElements > 2)
                     {
                         if (Response.Equals(@"%no[aA]nswer"))
                             return 0;
 
-                        string[] inputRows = Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                         string[] correctRows = answer.Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        string[] inputRows = Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                         var inputRow1 = inputRows[0] + " " + inputRows[1];
                         var inputRow2 = inputRows[2] + " " + inputRows[3];
@@ -42,6 +41,8 @@ namespace Participant_Result
                         var correctRow2 = correctRows[2] + " " + correctRows[3];
 
                         int score = 0;
+
+                        if (inputRow1.Equals(correctRow2) && inputRow2.Equals(correctRow1)) return 1;
 
                         if (inputRow1.Equals(correctRow1)) score++;
                         if (inputRow2.Equals(correctRow2)) score++;

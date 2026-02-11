@@ -6,7 +6,6 @@ using System.Data;
 using KEGE_Station;
 using KEGE_Station.Models.Exceptions;
 using Exceptions;
-using System.ComponentModel;
 
 namespace Result_Analyzer
 {
@@ -99,7 +98,7 @@ namespace Result_Analyzer
             {
                 string answersPath = App.GetResourceString("SaveAnswersPath");
 
-                var file = Directory.GetFiles(answersPath, $"{id}*.json");
+                var file = Directory.GetFiles(answersPath, $"{id}*.json"); // Получаем файл с соответствующим id
                 var json = File.ReadAllText(file[0]);
                 return JsonSerializer.Deserialize<ResponseOption>(json);
             }
