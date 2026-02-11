@@ -1,12 +1,11 @@
-﻿using Participant_Result;
-using KEGE_Station.User_Controls;
+﻿using System.IO;
 using Microsoft.Win32;
-using System.IO;
 using System.Text.Json;
-using System.Windows.Controls;
+using Participant_Result;
 using KEGE_Station.Windows;
+using System.Windows.Controls;
+using KEGE_Station.User_Controls;
 using KEGE_Station.Models.Exceptions;
-using System.Linq.Expressions;
 
 namespace KEGE_Station.Work_Areas.Checking_the_results
 {
@@ -22,17 +21,17 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
             _labelPath = label;
             _results = new List<Result>();
         }
-        
-        private void ShowNotification(string title, string message, bool isError)
+
+        public bool CheckValidation(Result result)
         {
-            NotificationWindow notification = new NotificationWindow(title, message, isError);
-            notification.Show();
+            if (result.Answers.Count == 0 || string.IsNullOrEmpty(result.Name) ||
+                string.IsNullOrEmpty(result.SecondName) || string.IsNullOrEmpty(result.MiddleName))
+                    return false;
+            return true;
         }
 
         public void ChoiseDirectory()
         {
-            string errors = string.Empty;
-
             OpenFolderDialog ofd = new OpenFolderDialog();
             ofd.Title = "Выберите папку с результатами";
 
@@ -47,7 +46,7 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     var jsonFiles = Directory.GetFiles(ofd.FolderName, "*.json");
 
                     if (jsonFiles.Length == 0)
-                        throw new IncorrectContentException("Выбранная папка не содержит файлы с результатами.");
+                        throw new IncorrectContentException("Выбрана пустая папка.");
 
                     foreach (var file in jsonFiles)
                     {
@@ -56,17 +55,10 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                         Result result = JsonSerializer.Deserialize<Result>(json);
                         _results.Add(result);
 
-                        ParticipantPanel panel = null;
+                        if (!CheckValidation(result))
+                            throw new IncorrectContentException($"{file} не соответствует необходимому формату.");
 
-                        try
-                        {
-                            panel = new ParticipantPanel(result);
-                        }
-                        catch (OptionNotFoundException ex)
-                        {
-                            errors += ex.Message + '\n';
-                            continue;
-                        }
+                        ParticipantPanel panel = new ParticipantPanel(result);
 
                         _parentPanel.Children.Add(panel);
                     }
@@ -74,19 +66,31 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
             }
             catch (IncorrectContentException ex)
             {
-                ShowNotification("Неверный формат файла", ex.Message, true);
+                NotificationWindow.QuickShow(
+                    "Неверный формат файла.",
+                    ex.Message,
+                    NotificationType.Error
+                    );
                 return;
+            }
+            catch (OptionNotFoundException ex)
+            {
+                NotificationWindow.QuickShow(
+                    "Ошибка конфигурации.",
+                    ex.Message,
+                    NotificationType.Error
+                    );
             }
             catch (Exception ex)
             {
-                ShowNotification("Неверный формат файла",
+                NotificationWindow.QuickShow(
+                    "Неверный формат файла.",
                     "Обнаруженный файл не соответствует формату результата.\n" +
-                    "\nПроверьте путь к ответам в настройках.", true);
+                    "\nПроверьте путь к ответам в настройках.",
+                    NotificationType.Error
+                    );
                 return;
             }
-
-            if (errors != string.Empty)
-                ShowNotification("Не удалось найти варианты", errors + '.', true);
 
             // СОРТИРОВКА!
 

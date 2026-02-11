@@ -14,7 +14,7 @@
         Title="NotificationWindow"
         WindowStartupLocation="CenterScreen"
         SizeToContent="Height"
-        Width="450">
+        Width="500">
     <Window.Resources>
 
         <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
@@ -61,105 +61,158 @@
         </Style>
 
     </Window.Resources>
-    
+
     <Border
-        Background="#fff"
-        BorderBrush="#000"
-        BorderThickness="3"
-        CornerRadius="20"
-        MouseLeftButtonDown="Border_MouseLeftButtonDown"
-        >
+    Background="#fff"
+    BorderBrush="#000"
+    BorderThickness="3"
+    CornerRadius="20"
+    MouseLeftButtonDown="Border_MouseLeftButtonDown"
+    >
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border 
-                Grid.Row="0" 
-                Background="#F0F0F0" 
-                CornerRadius="17 17 0 0" 
-                Margin="0 0 0 0"
-                BorderBrush="#000"
-                BorderThickness="0 0 0 3"
-                >
+            x:Name="_NotificationType"
+            Grid.Row="0" 
+            Background="#F0F0F0" 
+            CornerRadius="17 17 0 0" 
+            Margin="0 0 0 0"
+            BorderBrush="#000"
+            BorderThickness="0 0 0 3"
+            >
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="10 0 0 0">
-                    
+
                         <Image 
-                            x:Name="_Icon" 
-                            Height="40" 
-                            Margin="10 5" 
-                            d:Source="/Resources/Icons/error96x96.png"
-                            Source="{Binding IconSource}"/>
+                        x:Name="_Icon" 
+                        Height="60" 
+                        Margin="10 5" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        d:Source="/Resources/Icons/error96x96.png"
+                        Source="{Binding IconSource}"/>
 
                         <TextBlock
-                            x:Name="_Title"
-                            d:Text="Error"
-                            Text="{Binding TitleText}"
-                            FontSize="30"
-                            FontWeight="SemiBold"
-                            FontFamily="/Resources/Fonts/#Inter"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            TextAlignment="Center"
-                            Margin="10, 5"
-                            />
+                        x:Name="_Title"
+                        d:Text="Error"
+                        Text="{Binding TitleText}"
+                        FontSize="34"
+                        FontWeight="SemiBold"
+                        FontFamily="/Resources/Fonts/#Inter"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Margin="10, 5"
+                        />
 
                     </StackPanel>
 
                     <Button 
-                        x:Name="_Close_btn" 
-                        Width="45" 
-                        Height="45" 
-                        Margin="0 0 15 0" 
-                        DockPanel.Dock="Right" 
-                        HorizontalAlignment="Right" 
-                        Click="_Close_btn_Click" 
-                        Template="{StaticResource NoMouseOverButtonTemplate}"
-                        >
+                    x:Name="_Close_btn" 
+                    Width="50" 
+                    Height="50" 
+                    Margin="0 0 15 0" 
+                    DockPanel.Dock="Right" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center"
+                    Click="_Close_btn_Click" 
+                    Template="{StaticResource NoMouseOverButtonTemplate}"
+                    >
                         <Image 
-                            Source="/Resources/Icons/buttonClose96x96.png" 
-                            Height="35" 
-                            Width="35"/>
+                        Source="/Resources/Icons/buttonClose96x96.png" 
+                        Height="35" 
+                        Width="35"/>
                     </Button>
-                    
+
                 </DockPanel>
             </Border>
 
             <TextBlock
-                Grid.Row="1"
-                x:Name="_MessageTitle"
-                d:Text="Message Title"
-                Text="{Binding MessageTitleText}"
-                FontSize="20"
-                FontWeight="Regular"
-                FontFamily="/Resources/Fonts/#Inter"
-                TextWrapping="Wrap"
-                Margin="10 10 10 10"
-                />
+            Grid.Row="1"
+            x:Name="_MessageTitle"
+            d:Text="Message Title"
+            Text="{Binding MessageTitleText}"
+            FontSize="24"
+            FontWeight="DemiBold"
+            FontFamily="/Resources/Fonts/#Inter"
+            TextWrapping="Wrap"
+            Margin="10 10 10 10"
+            />
 
             <ScrollViewer
-                Grid.Row="2"
-                MaxHeight="300"
-                Margin="10"
-                VerticalScrollBarVisibility="Auto"
-                >
+            Grid.Row="2"
+            MaxHeight="300"
+            Margin="10"
+            VerticalScrollBarVisibility="Auto"
+            >
 
                 <TextBlock
-                    Grid.Row="2"
-                    x:Name="_Message"
-                    d:Text="Some message"
-                    Text="{Binding MessageText}"
-                    FontSize="20"
-                    FontWeight="Regular"
-                    FontFamily="/Resources/Fonts/#Inter"
-                    TextWrapping="Wrap"
-                    />
+                Grid.Row="2"
+                x:Name="_Message"
+                d:Text="Some message"
+                Text="{Binding MessageText}"
+                FontSize="24"
+                FontWeight="DemiBold"
+                FontFamily="/Resources/Fonts/#Inter"
+                TextWrapping="Wrap"
+                />
 
             </ScrollViewer>
+
+            <StackPanel 
+            x:Name="_YesNoPanel"
+            Visibility="Visible"
+            Grid.Row="3"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            >
+
+                <Button 
+                x:Name="Yes_btn" 
+                Width="80" 
+                Height="60" 
+                Margin="10 10 2 10" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center"
+                Click="Yes_btn_Click" 
+                Template="{StaticResource NoMouseOverButtonTemplate}"
+                >
+                    <TextBlock
+                    Text="Yes"
+                    FontSize="30"
+                    FontWeight="SemiBold"
+                    FontFamily="/Resources/Fonts/#Inter"
+                    />
+                </Button>
+
+                <Button 
+                x:Name="No_btn" 
+                Width="80" 
+                Height="60" 
+                Margin="2 10 10 10" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center"
+                Click="No_btn_Click" 
+                Template="{StaticResource NoMouseOverButtonTemplate}"
+                >
+                    <TextBlock
+                    Text="No"
+                    FontSize="30"
+                    FontWeight="SemiBold"
+                    FontFamily="/Resources/Fonts/#Inter"
+                    />
+                </Button>
+
+
+            </StackPanel>
 
         </Grid>
     </Border>

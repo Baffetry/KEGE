@@ -53,11 +53,6 @@ namespace Result_Analyzer
 
                     score += currentTaskScore;
 
-                    //var temp = correctAnswer.Response.Split(new[] { ' ' },
-                    //        StringSplitOptions.RemoveEmptyEntries);
-
-                    //correctAnswer.Response = $"{temp[0]} {temp[1]}";
-
                     statistic.Add(new AnswerStatistic(
                         currentAnswer.TaskNumber,
                         currentAnswer.Response, 
@@ -70,10 +65,10 @@ namespace Result_Analyzer
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(
-                    $"{result.SecondName} " +
-                    $"{result.Name} " +
-                    $"{result.MiddleName}\n"
+                throw new OptionNotFoundException(
+                    $"Не удалось найти вариант участника: " +
+                    $"{result.SecondName} {result.Name} {result.MiddleName}\n\n" +
+                    $"ID варианта: {result.OptionID}"
                 );
             }
         }
@@ -135,7 +130,7 @@ namespace Result_Analyzer
             }
             catch (Exception cfgEx)
             {
-                throw new ConfigurationException("Проверьте, указан ли путь к файлу с баллами");
+                throw new ConfigurationException("Проверьте путь к файлу с баллами.");
             }
         }
     }

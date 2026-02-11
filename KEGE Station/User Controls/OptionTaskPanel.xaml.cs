@@ -1,10 +1,10 @@
-﻿using Edit_Option;
-using KEGE_Station.Windows;
-using Microsoft.Win32;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.IO;
 using Task_Data;
+using Edit_Option;
+using System.Windows;
+using Microsoft.Win32;
+using KEGE_Station.Windows;
+using System.Windows.Controls;
 
 namespace KEGE_Station.User_Controls
 {
@@ -117,10 +117,7 @@ namespace KEGE_Station.User_Controls
 
         private void _taskRemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Регистрируем удаление в истории
             _editor.RegisterAction(EditorActionType.DeletePanel, this);
-
-            // 2. Удаляем из интерфейса
             _parentPanel.Children.Remove(this);
         }
 

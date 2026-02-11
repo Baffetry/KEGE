@@ -1,13 +1,13 @@
-﻿using KEGE_Station.User_Controls;
-using Microsoft.Win32;
-using System.IO;
-using System.Text.Json;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.IO;
 using Task_Data;
-using Testing_Option;
 using KEGE_Station;
+using Testing_Option;
+using Microsoft.Win32;
+using System.Text.Json;
 using KEGE_Station.Windows;
+using System.Windows.Controls;
+using KEGE_Station.User_Controls;
+using KEGE_Station.Models.Exceptions;
 
 namespace Edit_Option
 {
@@ -36,22 +36,61 @@ namespace Edit_Option
 
         public void ChoiseOption()
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = App.GetResourceString("SaveOptionsPath");
-
-            if (ofd.ShowDialog() is true)
+            EraseAll();
+            try
             {
-                _pathLabel.Content = ofd.FileName;
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.InitialDirectory = App.GetResourceString("SaveOptionsPath");
 
-                string json = File.ReadAllText(ofd.FileName);
-                _currentOption = JsonSerializer.Deserialize<TestingOption>(json);
-
-                foreach (var task in _currentOption.TaskList)
+                if (ofd.ShowDialog() is true)
                 {
-                    OptionTaskPanel otp = new OptionTaskPanel(_parentPanel, this, task);
-                    _parentPanel.Children.Add(otp);
+                    _pathLabel.Content = ofd.FileName;
+
+                    string extension = Path.GetExtension(ofd.FileName).ToLower();
+
+                    if (extension != ".json")
+                        throw new WrongFileFormatException("Расширение файла не соответствует JSON формату.");
+
+                    string json = File.ReadAllText(ofd.FileName);
+                    _currentOption = JsonSerializer.Deserialize<TestingOption>(json);
+
+                    if (_currentOption.TaskList.Count == 0)
+                        throw new IncorrectContentException("Выбранный файл не соответствует необходимому формату");
+
+                    foreach (var task in _currentOption.TaskList)
+                    {
+                        OptionTaskPanel otp = new OptionTaskPanel(_parentPanel, this, task);
+                        _parentPanel.Children.Add(otp);
+                    }
+                    SortPanels();
                 }
-                SortPanels();
+            }
+            catch (WrongFileFormatException ex)
+            {
+                NotificationWindow.QuickShow(
+                    "Выбор файла.",
+                    ex.Message,
+                    NotificationType.Error
+                    );
+                EraseAll();
+            }
+            catch (IncorrectContentException ex)
+            {
+                NotificationWindow.QuickShow(
+                    "Выбор файла.",
+                    ex.Message,
+                    NotificationType.Error
+                    );
+                EraseAll();
+            }
+            catch (Exception ex)
+            {
+                NotificationWindow.QuickShow(
+                    "Ошибка программы.",
+                    ex.Message,
+                    NotificationType.Error
+                    );
+                EraseAll();
             }
         }
 
@@ -93,8 +132,11 @@ namespace Edit_Option
 
             if (_pathLabel.Content is null || string.IsNullOrEmpty(_pathLabel.Content.ToString()))
             {
-                notification = new NotificationWindow("Ошибка сохранения", "Вы не выбрали вариант для редактирования", true);
-                notification.Show();
+                NotificationWindow.QuickShow(
+                    "Ошибка сохранения.",
+                    "Выберите вариант для редактирования.",
+                    NotificationType.Error
+                    );
                 return;
             }
 
@@ -117,8 +159,11 @@ namespace Edit_Option
             });
             File.WriteAllText(_pathLabel.Content.ToString(), json);
 
-            notification = new NotificationWindow("Сохранение", "Вариант успешно сохранён");
-            notification.Show();
+            NotificationWindow.QuickShow(
+                "Сохранение варианта.",
+                "Вариант успешно сохранён!",
+                NotificationType.Success
+                );
 
             EraseAll();
         }

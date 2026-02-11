@@ -12,11 +12,9 @@ namespace KEGE_Station.User_Controls
     /// </summary>
     public partial class SettingsControl : UserControl
     {
-        private readonly string[] taskNumbers = {
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-            "11", "12", "13", "14", "15", "16", "17", "18",
-            "19-21", "22", "23", "24", "25", "26", "27"
-        };
+        private readonly string[] taskNumbers = Enumerable.Range(1, 27)
+            .Select(n => n.ToString()).ToArray();
+
 
         public SettingsControl()
         {
@@ -47,6 +45,7 @@ namespace KEGE_Station.User_Controls
             // Добавление задания | Red
             ButtonBehavior.Apply(Clear_btn, true);
         }
+
         public void RefreshSettings()
         {
             Setting_TaskPath.Text = App.GetResourceString("TaskBasePath");
@@ -54,6 +53,7 @@ namespace KEGE_Station.User_Controls
             Setting_OptionsPath.Text = App.GetResourceString("SaveOptionsPath");
             Setting_AnswersPath.Text = App.GetResourceString("SaveAnswersPath");
         }
+
         private void ClearAllFields(bool isSelectionChanged = false)
         {
             NewTask_ImagePath.Text = "";
@@ -68,6 +68,7 @@ namespace KEGE_Station.User_Controls
             if (!isSelectionChanged)
                 TaskNumber_ComboBox.SelectedIndex = -1;
         }
+
         private void TaskNumber_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SingleAnswerArea == null || TripleAnswerArea == null) return;
@@ -93,6 +94,7 @@ namespace KEGE_Station.User_Controls
 
             ClearAllFields(true);
         }
+
         private void SaveTaskFiles(string basePath, string taskNum, int index, string answerSrc)
         {
             string targetDir = Path.Combine(basePath, taskNum, index.ToString());
@@ -113,11 +115,7 @@ namespace KEGE_Station.User_Controls
                 file.CopyTo(destFile, true);
             }
         }
-        private void ShowNotification(string title, string message, bool isError = false)
-        {
-            var notification = new NotificationWindow(title, message, isError);
-            notification.Show();
-        }
+
         private void SaveSettings_btn_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -141,13 +139,22 @@ namespace KEGE_Station.User_Controls
                 App.SetResourceString("SaveAnswersPath", Setting_AnswersPath.Text);
                 App.SetResourceString("ScoreTable", Setting_ScoreTable.Text);
 
-                ShowNotification("Настройки путей", "Все пути успешно сохранены!");
+                NotificationWindow.QuickShow(
+                    "Настройки конфигурации.",
+                    "Настройки успешно сохранены!",
+                    NotificationType.Success
+                    );
             }
             catch (Exception ex)
             {
-                ShowNotification("Настройки путей", $"Ну удалось сохранить файл: {ex.Message}.", true);
+                NotificationWindow.QuickShow(
+                    "Настройки конфигурации.",
+                    $"Не удалось сохранить файл: {ex.Message}.",
+                    NotificationType.Error
+                    );
             }
         }
+
         private void AddTask_btn_Click(object sender, RoutedEventArgs e)
         {
             NotificationWindow notification;
@@ -157,7 +164,11 @@ namespace KEGE_Station.User_Controls
 
             if (string.IsNullOrEmpty(selected) || string.IsNullOrEmpty(NewTask_ImagePath.Text))
             {
-                ShowNotification("Добавление задания", "Не выбран номер задания или не указан путь к изображению.", true);
+                NotificationWindow.QuickShow(
+                    "Создание задания.",
+                    "Не выбран номер задания или не указан путь к изображению.",
+                    NotificationType.Warning
+                    );
                 return;
             }
 
@@ -171,7 +182,11 @@ namespace KEGE_Station.User_Controls
                         string.IsNullOrEmpty(Answer20_Path.Text) ||
                         string.IsNullOrEmpty(Answer21_Path.Text))
                     {
-                        ShowNotification("Добавление задания", "Для заданий 19-21 должны быть указаны все три файла с ответами.", true);
+                        NotificationWindow.QuickShow(
+                            "Создание задания.",
+                            "Для заданий 19-21 должны быть указаны все три файла с ответами.",
+                            NotificationType.Warning
+                            );
                     }
 
                     string[] tripleTasks = { "19", "20", "21" };
@@ -185,7 +200,11 @@ namespace KEGE_Station.User_Controls
                 {
                     if (string.IsNullOrEmpty(NewTask_AnswerPath.Text))
                     {
-                        ShowNotification("Добавление задания", "Необходимо указать файл с ответом.", true);
+                        NotificationWindow.QuickShow(
+                            "Создание задания.",
+                            "Необходимо указать файл с ответом.",
+                            NotificationType.Warning
+                            );
                         return;
                     }
 
@@ -193,14 +212,23 @@ namespace KEGE_Station.User_Controls
                     SaveTaskFiles(basePath, selected, nextIndex, NewTask_AnswerPath.Text);
                 }
 
-                ShowNotification("Добавление задания", $"Задание {selected} успешно добавлено! (номер: {nextIndex})");
+                NotificationWindow.QuickShow(
+                    "Создание задания.",
+                    $"Задание {selected} успешно добавлено! (номер папки: {nextIndex})",
+                    NotificationType.Warning
+                    );
                 ClearAllFields();
             }
             catch (Exception ex)
             {
-                ShowNotification("Ошибка программы", $"{ex.Message}", true);
+                NotificationWindow.QuickShow(
+                    "Ошибка программы",
+                    $"{ex.Message}",
+                    NotificationType.Error
+                    );
             }
         }
+
         private void BrowseFile_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -239,14 +267,13 @@ namespace KEGE_Station.User_Controls
                                 .Any(f => f.FullName == fileInfo.FullName);
 
                             if (!exists)
-                            {
                                 ExtraFiles_ListBox.Items.Add(fileInfo);
-                            }
                         }
                         break;
                 }
             }
         }
+
         private int GetNextSharedIndex(string basePath, string[] tasks)
         {
             int maxIndex = 0;
@@ -276,6 +303,7 @@ namespace KEGE_Station.User_Controls
             }
             return maxIndex + 1; // Возвращаем следующий свободный номер
         }
+
         private void Browse_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;

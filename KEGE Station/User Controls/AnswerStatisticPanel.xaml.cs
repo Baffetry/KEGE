@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Text.RegularExpressions;
 
 namespace KEGE_Station.User_Controls
 {
@@ -24,16 +24,14 @@ namespace KEGE_Station.User_Controls
         {
             if (string.IsNullOrWhiteSpace(input)) return "";
 
-            // 1. Заменяем метку %noAnswer% на пустую строку, чтобы сохранить структуру массива
-            // Используем RegexOptions.IgnoreCase, чтобы не зависеть от регистра
+            // Заменяем метку %noAnswer% на пустую строку, чтобы сохранить структуру массива
             string cleanedInput = Regex.Replace(input, @"%no[aA]nswer%", "", RegexOptions.IgnoreCase);
 
-            // Разделяем строку, но теперь НЕ используем RemoveEmptyEntries, 
-            // чтобы пустые ответы (где был %noAnswer%) остались в массиве как ""
+            // Разделяем строку
             var parts = cleanedInput.Split(' ');
             var formatted = new StringBuilder();
 
-            // 2. Находим максимальную длину числа для первой колонки
+            // Находим максимальную длину числа для первой колонки
             int maxFirstColumnLength = 0;
             for (int i = 0; i < parts.Length; i += 2)
             {
@@ -43,7 +41,7 @@ namespace KEGE_Station.User_Controls
 
             int padding = maxFirstColumnLength + 3;
 
-            // 3. Формируем строки
+            // Формируем строки
             for (int i = 0; i < parts.Length; i += 2)
             {
                 // Выравниваем первое число. Если там был %noAnswer%, будет просто Padding из пробелов
@@ -55,7 +53,8 @@ namespace KEGE_Station.User_Controls
                 if (i + 2 < parts.Length) formatted.Append(Environment.NewLine);
             }
 
-            return formatted.ToString().TrimEnd(); // Убираем лишние переносы в конце
+            // Убираем лишние переносы в конце
+            return formatted.ToString().TrimEnd(); 
         }
     }
 }

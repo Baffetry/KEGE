@@ -1,12 +1,12 @@
-﻿using Edit_Option;
+﻿using System.IO;
 using Exceptions;
-using KEGE_Station.Windows;
-using KEGE_Station.Work_Areas.Checking_the_results;
-using Option_Generator;
-using System.IO;
-using System.Text.Json;
+using Edit_Option;
 using System.Windows;
+using Option_Generator;
+using System.Text.Json;
+using KEGE_Station.Windows;
 using System.Windows.Controls;
+using KEGE_Station.Work_Areas.Checking_the_results;
 
 namespace KEGE_Station
 {
@@ -73,8 +73,11 @@ namespace KEGE_Station
         {
             if (!int.TryParse(AmountOfOptions.Text, out int count))
             {
-                NotificationWindow notification = new NotificationWindow("Неверное значение", "Введите корректное количество вариантов");
-                notification.Show();
+                NotificationWindow.QuickShow(
+                    "Ошибка генерации.",
+                    "Введите корректное количество вариантов.",
+                    NotificationType.Error
+                    );
                 return;
             }
 
@@ -92,8 +95,8 @@ namespace KEGE_Station
 
 
                     string fileName = $"{option.OptionID}_Вариант_{i + 1:000}_{DateTime.Now:dd-MM-yyyy}.json";
-                    string optionFilePath = System.IO.Path.Combine(optionsPath, fileName);
-                    string answerFilePath = System.IO.Path.Combine(answersPath, fileName);
+                    string optionFilePath = Path.Combine(optionsPath, fileName);
+                    string answerFilePath = Path.Combine(answersPath, fileName);
 
                     string jsonOption = JsonSerializer.Serialize(option, new JsonSerializerOptions
                     {
@@ -109,20 +112,30 @@ namespace KEGE_Station
                     File.WriteAllText(answerFilePath, jsonAnswer);
                 }
 
-                NotificationWindow notification = new NotificationWindow("Создание вариантов", $"Варианты успешно созданы ({count} шт.) и сохранены в " +
-                    $"{optionsPath}");
-                notification.Show();
+                NotificationWindow.QuickShow(
+                    "Генерация вариантов.",
+                    $"Варианты успешно созданы ({count} шт.) и сохранены в {optionsPath}.",
+                    NotificationType.Success
+                    );
+
+                AmountOfOptions.Text = string.Empty;
             }
             catch (ConfigurationException cfgEx)
             {
-                NotificationWindow notification = new NotificationWindow("Ошибка конфигурации", cfgEx.Message, true);
-                notification.Show();
+                NotificationWindow.QuickShow(
+                    "Ошибка конфигурации.",
+                    cfgEx.Message,
+                    NotificationType.Error
+                    );
             }
             catch (Exception ex)
             {
-                var notification = new NotificationWindow("Ошибка генерации", "База заданий повреждена или не заполнена.\n" +
-                    "\nПроверить названия папок (они должны быть названы числом - номером задания) или их наличие.");
-                notification.Show();
+                NotificationWindow.QuickShow(
+                    "Ошибка генерации вариантов.",
+                    "База заданий повреждена или не заполнена.\n\nПроверить названия папок " +
+                    "(они должны быть названы числом - номером задания) или их наличие.",
+                    NotificationType.Error
+                    );
             }
         }
 
