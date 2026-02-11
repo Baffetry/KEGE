@@ -30,14 +30,13 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
             return true;
         }
 
-        public void ChoiseDirectory()
+        public bool ChoiseDirectory()
         {
             OpenFolderDialog ofd = new OpenFolderDialog();
             ofd.Title = "Выберите папку с результатами";
 
             try
             {
-
                 if (ofd.ShowDialog() is true)
                 {
                     _parentPanel.Children.Clear();
@@ -62,6 +61,8 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
 
                         _parentPanel.Children.Add(panel);
                     }
+
+                    return true;
                 }
             }
             catch (WrongDirectoryException ex)
@@ -71,7 +72,6 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     ex.Message,
                     NotificationType.Error
                     );
-                return;
             }
             catch (IncorrectContentException ex)
             {
@@ -80,7 +80,6 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     ex.Message,
                     NotificationType.Error
                     );
-                return;
             }
             catch (OptionNotFoundException ex)
             {
@@ -98,8 +97,8 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     "\nПроверьте путь к ответам в настройках.",
                     NotificationType.Error
                     );
-                return;
             }
+            return false;
 
             // СОРТИРОВКА!
 

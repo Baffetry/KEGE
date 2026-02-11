@@ -1,11 +1,14 @@
 ﻿using System.IO;
 using Exceptions;
 using Edit_Option;
+using System.Text;
 using System.Windows;
+using Microsoft.Win32;
 using Option_Generator;
 using System.Text.Json;
 using KEGE_Station.Windows;
 using System.Windows.Controls;
+using KEGE_Station.User_Controls;
 using KEGE_Station.Work_Areas.Checking_the_results;
 
 namespace KEGE_Station
@@ -39,6 +42,7 @@ namespace KEGE_Station
             GridFacade.SetCRP(CheckResultPanel);
             GridFacade.SetSG(SettingsControlPanel);
         }
+
         private void SetButtonsBehavior()
         {
             // Green behavior
@@ -46,6 +50,7 @@ namespace KEGE_Station
             ButtonBehavior.Apply(EditOptionPanel_Save_btn);
             ButtonBehavior.Apply(ChoiceOption);
             ButtonBehavior.Apply(ChoiceRepository);
+            ButtonBehavior.Apply(Extraction_btn);
 
             // Red behavior
             ButtonBehavior.Apply(GenerateOptionsPanel_Back_btn, true);
@@ -184,7 +189,57 @@ namespace KEGE_Station
         private void ChoiceRepository_Click(object sender, RoutedEventArgs e)
         {
             CloseAllStatisticWindows();
-            resultChecker.ChoiseDirectory();
+            if (resultChecker.ChoiseDirectory())
+                Extraction_btn.Visibility = Visibility.Visible;
+        }
+
+        private void Extraction_Click(object sender, RoutedEventArgs e)
+        {
+            var data = _ResultPanel.Children
+                           .OfType<ParticipantPanel>()
+                           .Select(p => p.ExtractionString)
+                           .ToList();
+
+            if (data.Count == 0)
+            {
+                NotificationWindow.QuickShow(
+                        "Экспорт результатов.",
+                        "Список участников пуст или данные не сформированы.",
+                        NotificationType.Error
+                        );
+            }
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "CSV File (*.csv)|*.csv",
+                FileName = $"Результаты_{DateTime.Now:dd-MM-yyyy}.csv"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    using (var writer = new StreamWriter(saveFileDialog.FileName, false, new UTF8Encoding(true)))
+                    {
+                        foreach (var line in data)
+                            writer.WriteLine(line);
+                    }
+
+                    NotificationWindow.QuickShow(
+                        "Экспорт результатов.",
+                        $"Результаты успешно экспортированы в {saveFileDialog.FileName}",
+                        NotificationType.Success
+                        );
+                }
+                catch (Exception ex)
+                {
+                    NotificationWindow.QuickShow(
+                        "Ошибка при сохранении.",
+                        ex.Message,
+                        NotificationType.Error
+                        );
+                }
+            }
         }
         #endregion
 
@@ -227,6 +282,5 @@ namespace KEGE_Station
         }
 
         #endregion
-
     }
 }

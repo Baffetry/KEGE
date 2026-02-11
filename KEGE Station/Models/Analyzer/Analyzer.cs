@@ -1,11 +1,12 @@
-﻿using Participant_Result;
-using System.IO;
-using System.Text.Json;
-using KEGE_Station.Models.Option;
+﻿using System.IO;
+using Exceptions;
+using System.Text;
 using System.Data;
 using KEGE_Station;
+using System.Text.Json;
+using Participant_Result;
+using KEGE_Station.Models.Option;
 using KEGE_Station.Models.Exceptions;
-using Exceptions;
 
 namespace Result_Analyzer
 {
@@ -27,40 +28,57 @@ namespace Result_Analyzer
         }
 
 
-        public (int, List<AnswerStatistic>) GetScore(Result result)
+        public (int, List<AnswerStatistic>, string) GetScore(Result result)
         {
             try
             {
+                StringBuilder sb = new StringBuilder($"{result.SecondName} {result.Name} {result.MiddleName}: ");
                 List<AnswerStatistic> statistic = new List<AnswerStatistic>();
-                int score = 0;
+                List<string> perTaskScores = new List<string>();
+
+                int primaryScore = 0;
 
                 var response = GetResponses(result.OptionID);
-
                 var responseList = response.ResponsesList;
                 var resultList = result.Answers;
 
-                for (int i = 0; i < resultList.Count; i++)
+                for (int i = 1; i <= responseList.Count; i++)
                 {
-                    if (resultList[i].Response.Equals("%noanswer%") || resultList[i].Response.Equals("%noAnswer%"))
-                        continue;
+                    string taskNum = i.ToString();
+                    var currentAnswer = resultList.FirstOrDefault(r => r.TaskNumber == taskNum);
+                    var correctAnswer = responseList.FirstOrDefault(x => x.TaskNumber == taskNum);
 
-                    var currentAnswer = resultList[i];
-                    var correctAnswer = responseList.First(x => x.TaskNumber.Equals(currentAnswer.TaskNumber));
+                    int taskScore = 0;
+                    string participantResponse = "%noAnswer%";
 
-                    var currentTaskScore = currentAnswer.Equals(correctAnswer);
-                    var color = SetColor(currentTaskScore, currentAnswer.TaskNumber);
+                    if (currentAnswer is not null)
+                    {
+                        if (correctAnswer is not null)
+                        {
+                            participantResponse = currentAnswer.Response;
+                            taskScore = currentAnswer.Equals(correctAnswer);
+                        }
 
-                    score += currentTaskScore;
+                        primaryScore += taskScore;
+                        perTaskScores.Add(taskScore.ToString());
 
-                    statistic.Add(new AnswerStatistic(
+                        var color = SetColor(taskScore, currentAnswer.TaskNumber);
+
+                        statistic.Add(new AnswerStatistic(
                         currentAnswer.TaskNumber,
-                        currentAnswer.Response, 
-                        correctAnswer.Response, 
-                        color)
-                    );
+                        currentAnswer.Response,
+                        correctAnswer.Response,
+                        color));
+                    }
+                    else
+                        perTaskScores.Add("0");
                 }
+                    int finalScore = _scoreDict.ContainsKey(primaryScore) ? _scoreDict[primaryScore] : primaryScore;
 
-                return (_scoreDict[score], statistic);
+                    string tasksPart = string.Join("\t", perTaskScores);
+                    string extractionString = $"{result.SecondName} {result.Name} {result.MiddleName}\t{tasksPart}";
+
+                    return (finalScore, statistic, extractionString);
             }
             catch (Exception ex)
             {

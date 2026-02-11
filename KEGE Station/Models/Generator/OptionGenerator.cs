@@ -1,13 +1,11 @@
-﻿using Exceptions;
-using KEGE_Station;
-using KEGE_Station.Models.Option;
-using KEGE_Station.Windows;
-using Participant_Result;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.IO;
 using Task_Data;
+using Exceptions;
+using System.Text;
 using Testing_Option;
+using Participant_Result;
+using KEGE_Station.Models.Option;
+using System.Text.RegularExpressions;
 
 namespace Option_Generator
 {
@@ -16,7 +14,6 @@ namespace Option_Generator
         private readonly Dictionary<string, List<TaskData>> _taskByNumber;
         private readonly Random _rnd;
         private readonly int[] LINKEDTASKS = { 19, 20, 21 };
-
 
         public OptionGenerator(string rootPath)
         {
@@ -56,7 +53,6 @@ namespace Option_Generator
             {
                 var tasks = new List<TaskData>();
                 var answers = new List<Answer>();
-
 
                 for (int i = 1; i <= _taskByNumber.Count; i++)
                 {

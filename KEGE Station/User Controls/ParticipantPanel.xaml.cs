@@ -1,7 +1,7 @@
-﻿using KEGE_Station.Windows;
-using Participant_Result;
+﻿using System.Windows;
 using Result_Analyzer;
-using System.Windows;
+using Participant_Result;
+using KEGE_Station.Windows;
 using System.Windows.Controls;
 
 namespace KEGE_Station.User_Controls
@@ -26,6 +26,8 @@ namespace KEGE_Station.User_Controls
         public List<Answer> ParticipantAnswers
             => _result.Answers;
 
+        public string ExtractionString { get; private set; }
+
         public ParticipantPanel(Result result)
         {
             InitializeComponent();
@@ -41,8 +43,9 @@ namespace KEGE_Station.User_Controls
             _SecondName.Text = ParticipantSecondName;
             _MiddleName.Text = ParticipantMiddleName;
 
-            var (score, statistic) = _analyzer.GetScore(_result);
+            var (score, statistic, exstraction) = _analyzer.GetScore(_result);
 
+            ExtractionString = exstraction;
             _statistics = statistic;
             _Score.Value = score;
             _Score.ScoreText = score.ToString();

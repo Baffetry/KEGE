@@ -68,7 +68,7 @@
                 Grid.Column="0" 
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Center"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 />
 
 
@@ -209,7 +209,7 @@
             <!-- || Проверка результатов || -->
             <Grid 
                 x:Name="CheckResultPanel" Grid.Column="0" 
-                Visibility="Collapsed"
+                Visibility="Visible"
                 >
                 <StackPanel
                     Orientation="Vertical"
@@ -247,12 +247,20 @@
                     <Separator BorderThickness="4" BorderBrush="#000000" Margin="15, 30"/>
                     
                     <ScrollViewer 
-                        x:Name="CheckResultPanel_ScrollViewer" Height="820" Margin="10, 20, 10, 20" 
+                        x:Name="CheckResultPanel_ScrollViewer" Height="740" Margin="10, 20, 10, 20" 
                         VerticalScrollBarVisibility="Auto" ScrollChanged="CheckResultPanel_ScrollViewer_ScrollChanged"
                         >
                         <StackPanel x:Name="_ResultPanel" Margin="10, 10, 15, 10"/>
                     </ScrollViewer>
-                </StackPanel>
+
+                        <Button
+                            x:Name="Extraction_btn" Width="180" Height="80" 
+                            HorizontalAlignment="Right" Content="Экспорт"
+                            FontFamily="/Resources/Fonts/#Inter" FontWeight="SemiBold" FontSize="32"
+                            Margin="35 0" Template="{StaticResource NoMouseOverButtonTemplate}" 
+                            Click="Extraction_Click" Visibility="Collapsed"
+                            />
+                    </StackPanel>
             </Grid>
 
             

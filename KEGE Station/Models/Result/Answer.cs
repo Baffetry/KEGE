@@ -19,7 +19,10 @@ namespace Participant_Result
 
             string inputAnswer = string.Empty, correctAnswer = string.Empty;
 
-            switch (taskNumber)
+            //if (this.Response.Contains("%noanswer", StringComparison.OrdinalIgnoreCase))
+            //    return 0;
+
+            switch (this.TaskNumber)
             {
                 case "27":
                 case "26":
@@ -28,7 +31,7 @@ namespace Participant_Result
 
                     if (countElements > 2)
                     {
-                        if (Response.Equals(@"%no[aA]nswer"))
+                        if (Response.Equals(@"%noAnswer"))
                             return 0;
 
                         string[] correctRows = answer.Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
@@ -46,12 +49,12 @@ namespace Participant_Result
 
                         if (inputRow1.Equals(correctRow1)) score++;
                         if (inputRow2.Equals(correctRow2)) score++;
-                        
+
                         return score;
                     }
                     else
                     {
-                        if (Response.Equals(@"%no[aA]nswer"))
+                        if (Response.Equals(@"%noanswer%", StringComparison.InvariantCultureIgnoreCase))
                             return 0;
 
                         string[] inputRow = Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);
@@ -77,8 +80,8 @@ namespace Participant_Result
 
                     inputAnswer = Regex.Replace(inputAnswer, @"%no[aA]nswer%", " ").Trim();
 
-                    return inputAnswer.Equals(correctAnswer) 
-                        ? 1 
+                    return inputAnswer.Equals(correctAnswer)
+                        ? 1
                         : 0;
             }
         }
