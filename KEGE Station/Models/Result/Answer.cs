@@ -50,7 +50,7 @@ namespace Participant_Result
                     }
                     else
                     {
-                        if (Regex.Match(Response, @"%no[aA]nswer%").Success)
+                        if (Response.Equals(@"%no[aA]nswer"))
                             return 0;
 
                         string[] inputRow = Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);

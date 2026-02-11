@@ -1,7 +1,6 @@
 ﻿using KEGE_Station.Windows;
 using Microsoft.Win32;
 using System.IO;
-using System.Runtime.Intrinsics.X86;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,8 +11,11 @@ namespace KEGE_Station.User_Controls
     /// </summary>
     public partial class SettingsControl : UserControl
     {
-        private readonly string[] taskNumbers = Enumerable.Range(1, 27)
-            .Select(n => n.ToString()).ToArray();
+        private readonly string[] taskNumbers = Enumerable.Range(1, 18)
+                    .Select(x => x.ToString())                                  // 1-18
+                    .Append("19-21")                                            // 19-21
+                    .Concat(Enumerable.Range(22, 6).Select(x => x.ToString()))  // 22-27
+                    .ToArray();
 
 
         public SettingsControl()
@@ -215,7 +217,7 @@ namespace KEGE_Station.User_Controls
                 NotificationWindow.QuickShow(
                     "Создание задания.",
                     $"Задание {selected} успешно добавлено! (номер папки: {nextIndex})",
-                    NotificationType.Warning
+                    NotificationType.Success
                     );
                 ClearAllFields();
             }

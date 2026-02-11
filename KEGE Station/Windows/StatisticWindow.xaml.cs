@@ -83,7 +83,7 @@ namespace KEGE_Station.Windows
             return (SolidColorBrush)new BrushConverter().ConvertFrom(hexColor);
         }
 
-        private void _Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void _Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {

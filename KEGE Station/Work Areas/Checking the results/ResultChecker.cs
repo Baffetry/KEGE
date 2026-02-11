@@ -46,7 +46,7 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     var jsonFiles = Directory.GetFiles(ofd.FolderName, "*.json");
 
                     if (jsonFiles.Length == 0)
-                        throw new IncorrectContentException("Выбрана пустая папка.");
+                        throw new WrongDirectoryException("Выбрана пустая директория.");
 
                     foreach (var file in jsonFiles)
                     {
@@ -64,10 +64,19 @@ namespace KEGE_Station.Work_Areas.Checking_the_results
                     }
                 }
             }
+            catch (WrongDirectoryException ex)
+            {
+                NotificationWindow.QuickShow(
+                    "Выбор директории.",
+                    ex.Message,
+                    NotificationType.Error
+                    );
+                return;
+            }
             catch (IncorrectContentException ex)
             {
                 NotificationWindow.QuickShow(
-                    "Неверный формат файла.",
+                    "Обработка файлов.",
                     ex.Message,
                     NotificationType.Error
                     );
