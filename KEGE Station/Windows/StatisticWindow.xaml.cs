@@ -41,7 +41,13 @@ namespace KEGE_Station.Windows
 
             for (int i = 0; i < statistics.Count; i++)
             {
+
                 var stat = statistics[i];
+
+                if (stat.ParticipantAnswer.Equals("%noanswer%",
+                    StringComparison.InvariantCultureIgnoreCase))
+                    continue;
+
                 var colorBrush = HexToBrush(stat.Color);
 
                 // Создаем панель

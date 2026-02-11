@@ -19,19 +19,16 @@ namespace Participant_Result
 
             string inputAnswer = string.Empty, correctAnswer = string.Empty;
 
-            //if (this.Response.Contains("%noanswer", StringComparison.OrdinalIgnoreCase))
-            //    return 0;
-
             switch (this.TaskNumber)
             {
                 case "27":
                 case "26":
 
-                    int countElements = answer.Response.Split(" ").Count();
+                    int countElements = Response.Split(" ").Count();
 
                     if (countElements > 2)
                     {
-                        if (Response.Equals(@"%noAnswer"))
+                        if (Response.Equals(@"%noаnswer%", StringComparison.InvariantCultureIgnoreCase))
                             return 0;
 
                         string[] correctRows = answer.Response.Split(" ", StringSplitOptions.RemoveEmptyEntries);

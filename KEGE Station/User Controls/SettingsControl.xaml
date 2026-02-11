@@ -448,7 +448,7 @@
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button 
-                        x:Name="Clear_btn" Content="Отчистить" Width="220" Height="60"
+                        x:Name="Clear_btn" Content="Очистить" Width="220" Height="60"
                         HorizontalAlignment="Right" Margin="0 20 0 0" FontSize="25" FontWeight="SemiBold"
                         Template="{StaticResource NoMouseOverButtonTemplate}" Click="Clear_btn_Click" BorderThickness="3"
                         />

@@ -68,7 +68,7 @@
                 Grid.Column="0" 
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Center"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 />
 
 
@@ -209,14 +209,14 @@
             <!-- || Проверка результатов || -->
             <Grid 
                 x:Name="CheckResultPanel" Grid.Column="0" 
-                Visibility="Visible"
+                Visibility="Collapsed"
                 >
                 <StackPanel
                     Orientation="Vertical"
                     >
                     
                     <Label 
-                        Content="Выберите вариант:" FontFamily="/Resources/Fonts/#Inter" 
+                        Content="Выберите папку с результатами:" FontFamily="/Resources/Fonts/#Inter" 
                         FontSize="40" FontWeight="SemiBold" Margin="30, 20, 0, 0"
                         />
                     

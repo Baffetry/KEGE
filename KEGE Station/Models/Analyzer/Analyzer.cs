@@ -32,7 +32,7 @@ namespace Result_Analyzer
         {
             try
             {
-                StringBuilder sb = new StringBuilder($"{result.SecondName} {result.Name} {result.MiddleName}: ");
+                StringBuilder sb = new StringBuilder($"{result.SecondName} {result.Name} {result.MiddleName} ");
                 List<AnswerStatistic> statistic = new List<AnswerStatistic>();
                 List<string> perTaskScores = new List<string>();
 
@@ -76,7 +76,7 @@ namespace Result_Analyzer
                     int finalScore = _scoreDict.ContainsKey(primaryScore) ? _scoreDict[primaryScore] : primaryScore;
 
                     string tasksPart = string.Join("\t", perTaskScores);
-                    string extractionString = $"{result.SecondName} {result.Name} {result.MiddleName}\t{tasksPart}";
+                    string extractionString = $"{result.SecondName}\t{result.Name}\t{result.MiddleName}\t{tasksPart}";
 
                     return (finalScore, statistic, extractionString);
             }

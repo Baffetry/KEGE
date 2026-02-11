@@ -189,8 +189,11 @@ namespace KEGE_Station
         private void ChoiceRepository_Click(object sender, RoutedEventArgs e)
         {
             CloseAllStatisticWindows();
-            if (resultChecker.ChoiseDirectory())
-                Extraction_btn.Visibility = Visibility.Visible;
+            resultChecker.ChoiseDirectory();
+
+            Extraction_btn.Visibility = _ResultPanel.Children.Count > 0 
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         private void Extraction_Click(object sender, RoutedEventArgs e)
@@ -219,8 +222,16 @@ namespace KEGE_Station
             {
                 try
                 {
-                    using (var writer = new StreamWriter(saveFileDialog.FileName, false, new UTF8Encoding(true)))
+                    using (var writer = new StreamWriter(saveFileDialog.FileName, false, Encoding.Unicode))
                     {
+                        int taskCount = 27;
+                        string header = "Ф\tИ\tО";
+
+                        for (int i = 1; i <= taskCount; i++)
+                            header += $"\t№ {i}";
+
+                        writer.WriteLine(header);
+
                         foreach (var line in data)
                             writer.WriteLine(line);
                     }
@@ -269,9 +280,7 @@ namespace KEGE_Station
             var windowsToClose = Application.Current.Windows.OfType<StatisticWindow>().ToList();
 
             foreach (var window in windowsToClose)
-            {
                 window.Close();
-            }
         }
         #endregion
 
